@@ -6,6 +6,8 @@ import {
   getVirtualRoot,
   serveStaticFiles
 } from './staticConfig';
+import { graphqlHTTP } from 'express-graphql';
+import { schema } from './api/schema';
 
 // initialize configuration
 dotenv.config();
@@ -23,6 +25,12 @@ if (serveStaticFiles()) {
 app.get('/', (req: Request, res: Response) => {
   res.send(`Hello world from ${req.hostname}`);
 });
+
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
+app.use('/graphql', graphqlHTTP({
+  schema,
+  graphiql: true
+}))
 
 // start the Express server
 app.listen(port, () => {
