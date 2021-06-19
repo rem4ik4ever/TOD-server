@@ -2,6 +2,17 @@
 ### Do not make changes to this file directly
 
 
+type DataTable {
+  fileKey: String
+  id: ID
+  name: String
+  status: String
+}
+
+type Mutation {
+  createDataTable(fileKey: String!, name: String!): DataTable!
+}
+
 type Query {
-  ok: Boolean!
+  drafts: [DataTable]!
 }

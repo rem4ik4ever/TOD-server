@@ -4,7 +4,7 @@
  */
 
 
-
+import { Context } from "./api/context"
 
 
 
@@ -28,6 +28,13 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  DataTable: { // root type
+    fileKey?: string | null; // String
+    id?: string | null; // ID
+    name?: string | null; // String
+    status?: string | null; // String
+  }
+  Mutation: {};
   Query: {};
 }
 
@@ -42,18 +49,42 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
+  DataTable: { // field return type
+    fileKey: string | null; // String
+    id: string | null; // ID
+    name: string | null; // String
+    status: string | null; // String
+  }
+  Mutation: { // field return type
+    createDataTable: NexusGenRootTypes['DataTable']; // DataTable!
+  }
   Query: { // field return type
-    ok: boolean; // Boolean!
+    drafts: Array<NexusGenRootTypes['DataTable'] | null>; // [DataTable]!
   }
 }
 
 export interface NexusGenFieldTypeNames {
+  DataTable: { // field return type name
+    fileKey: 'String'
+    id: 'ID'
+    name: 'String'
+    status: 'String'
+  }
+  Mutation: { // field return type name
+    createDataTable: 'DataTable'
+  }
   Query: { // field return type name
-    ok: 'Boolean'
+    drafts: 'DataTable'
   }
 }
 
 export interface NexusGenArgTypes {
+  Mutation: {
+    createDataTable: { // args
+      fileKey: string; // String!
+      name: string; // String!
+    }
+  }
 }
 
 export interface NexusGenAbstractTypeMembers {
@@ -87,7 +118,7 @@ export type NexusGenFeaturesConfig = {
 }
 
 export interface NexusGenTypes {
-  context: any;
+  context: Context;
   inputTypes: NexusGenInputs;
   rootTypes: NexusGenRootTypes;
   inputTypeShapes: NexusGenInputs & NexusGenEnums & NexusGenScalars;

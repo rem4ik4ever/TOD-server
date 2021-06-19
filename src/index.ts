@@ -8,6 +8,7 @@ import {
 } from './staticConfig';
 import { graphqlHTTP } from 'express-graphql';
 import { schema } from './api/schema';
+import { context } from './api/context';
 
 // initialize configuration
 dotenv.config();
@@ -29,6 +30,7 @@ app.get('/', (req: Request, res: Response) => {
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 app.use('/graphql', graphqlHTTP({
   schema,
+  context,
   graphiql: true
 }))
 
