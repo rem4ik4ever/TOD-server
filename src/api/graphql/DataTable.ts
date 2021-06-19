@@ -1,10 +1,10 @@
 import { extendType, nonNull, objectType, stringArg } from 'nexus'
-import { DataTable as IDataTable } from '../db'
+import { Context } from '../context'
 
 export const DataTable = objectType({
   name: 'DataTable',
   definition (t) {
-    t.id('id')
+    t.nonNull.id('id')
     t.string('name')
     t.string('status')
     t.string('fileKey')
@@ -16,8 +16,8 @@ export const DraftTablesQuery = extendType({
   definition (t) {
     t.nonNull.list.field('drafts', {
       type: 'DataTable',
-      async resolve (_root, _args, ctx) {
-        return await new Promise<IDataTable[]>((resolve, reject) => resolve(ctx.db.dataTables.filter((table: IDataTable) => table.status === 'draft')))
+      resolve: async (_, __, ctx: Context) => {
+        return await ctx.db.dataTable.findMany({ where: { status: 'draft' } })
       }
     })
   }
@@ -32,17 +32,13 @@ export const CreateDataTable = extendType({
         name: nonNull(stringArg()),
         fileKey: nonNull(stringArg())
       },
-      resolve (_root, args, ctx) {
-        // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
-        const nextId: number = ctx.db.dataTables.length + 1;
+      resolve (_, args, ctx) {
         const draft = {
-          id: nextId,
           name: args.name,
           fileKey: args.fileKey,
           status: 'draft'
         }
-        ctx.db.dataTables.push(draft)
-        return draft;
+        return ctx.db.dataTable.create({ data: draft })
       }
     })
   }

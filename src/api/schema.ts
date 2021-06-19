@@ -11,5 +11,13 @@ export const schema = makeSchema({
   contextType: {
     module: join(__dirname, './context.ts'),
     export: 'Context'
+  },
+  sourceTypes: {
+    modules: [
+      {
+        module: require.resolve('.prisma/client/index.d.ts'),
+        alias: 'prisma'
+      }
+    ]
   }
 })

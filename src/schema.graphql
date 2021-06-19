@@ -4,15 +4,17 @@
 
 type DataTable {
   fileKey: String
-  id: ID
+  id: ID!
   name: String
   status: String
 }
 
 type Mutation {
   createDataTable(fileKey: String!, name: String!): DataTable!
+  ping(text: String!): String!
 }
 
 type Query {
   drafts: [DataTable]!
+  ok: Boolean!
 }

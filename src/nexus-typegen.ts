@@ -3,7 +3,7 @@
  * Do not make changes to this file directly
  */
 
-
+import * as prisma from "./../node_modules/.prisma/client/index"
 import { Context } from "./api/context"
 
 
@@ -28,12 +28,7 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
-  DataTable: { // root type
-    fileKey?: string | null; // String
-    id?: string | null; // ID
-    name?: string | null; // String
-    status?: string | null; // String
-  }
+  DataTable: prisma.DataTable;
   Mutation: {};
   Query: {};
 }
@@ -51,15 +46,17 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 export interface NexusGenFieldTypes {
   DataTable: { // field return type
     fileKey: string | null; // String
-    id: string | null; // ID
+    id: string; // ID!
     name: string | null; // String
     status: string | null; // String
   }
   Mutation: { // field return type
     createDataTable: NexusGenRootTypes['DataTable']; // DataTable!
+    ping: string; // String!
   }
   Query: { // field return type
     drafts: Array<NexusGenRootTypes['DataTable'] | null>; // [DataTable]!
+    ok: boolean; // Boolean!
   }
 }
 
@@ -72,9 +69,11 @@ export interface NexusGenFieldTypeNames {
   }
   Mutation: { // field return type name
     createDataTable: 'DataTable'
+    ping: 'String'
   }
   Query: { // field return type name
     drafts: 'DataTable'
+    ok: 'Boolean'
   }
 }
 
@@ -83,6 +82,9 @@ export interface NexusGenArgTypes {
     createDataTable: { // args
       fileKey: string; // String!
       name: string; // String!
+    }
+    ping: { // args
+      text: string; // String!
     }
   }
 }

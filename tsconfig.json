@@ -1,18 +1,10 @@
 {
   "compilerOptions": {
-    "strictNullChecks": true,
-    "module": "commonjs",
     "esModuleInterop": true,
-    "target": "es6",
-    "noImplicitAny": true,
-    "moduleResolution": "node",
-    "sourceMap": true,
     "outDir": "dist",
-    "rootDir": ".",
-    "baseUrl": ".",
-    "paths": {
-      "*": ["node_modules/*"]
-    }
+    "rootDir": "src",
+    "lib": ["esnext"],
+    "strict": true
   },
   "include": ["src/**/*"]
 }

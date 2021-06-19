@@ -1,21 +1,3 @@
-export interface DataTable {
-  id: number
-  name: string
-  status: string
-  fileKey: string
-}
+import { PrismaClient } from '@prisma/client';
 
-export interface Db {
-  dataTables: DataTable[]
-}
-
-export const db: Db = {
-  dataTables: [
-    {
-      id: 1,
-      name: 'rem',
-      status: 'draft',
-      fileKey: 'filekey1'
-    }
-  ]
-}
+export const db = new PrismaClient()
