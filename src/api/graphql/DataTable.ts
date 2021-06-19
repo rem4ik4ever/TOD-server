@@ -16,8 +16,8 @@ export const DraftTablesQuery = extendType({
   definition (t) {
     t.nonNull.list.field('drafts', {
       type: 'DataTable',
-      resolve (_root, _args, ctx) {
-        return ctx.db.dataTables.filter((table: IDataTable) => table.status === 'draft')
+      async resolve (_root, _args, ctx) {
+        return await new Promise<IDataTable[]>((resolve, reject) => resolve(ctx.db.dataTables.filter((table: IDataTable) => table.status === 'draft')))
       }
     })
   }
