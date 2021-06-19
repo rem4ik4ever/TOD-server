@@ -1,48 +1,18 @@
-import { createTestContext } from './helper';
+import server from '../../../server';
+import supertest from 'supertest';
 
-const ctx = createTestContext();
+const request = supertest(server);
 
 describe('DataTable', () => {
   test('fetch draft DataTables', async () => {
-    const draftResults = await ctx.client?.request(`
-      {
-        drafts {
-          id
-          name
-          status
-          fileKey
-        }
-      }
-    `);
-    expect(draftResults).toMatchInlineSnapshot(`
-Object {
-  "drafts": Array [
-    Object {
-      "fileKey": "liam1",
-      "id": "1",
-      "name": "Liam",
-      "status": "draft",
-    },
-    Object {
-      "fileKey": "rem1",
-      "id": "2",
-      "name": "Rem",
-      "status": "draft",
-    },
-    Object {
-      "fileKey": "naska2",
-      "id": "3",
-      "name": "Nazgul",
-      "status": "draft",
-    },
-    Object {
-      "fileKey": "123",
-      "id": "4",
-      "name": "41",
-      "status": "draft",
-    },
-  ],
-}
-`)
+    const response = await request
+      .post('/graphql')
+      .send({
+        query: '{drafts {id, name, status, fileKey } }'
+      })
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(200)
+    expect(response.body).toBeInstanceOf(Object);
   })
 });

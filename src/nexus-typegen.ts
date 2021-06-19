@@ -5,8 +5,21 @@
 
 import * as prisma from "./../node_modules/.prisma/client/index"
 import { Context } from "./api/context"
+import { core, connectionPluginCore } from "nexus"
 
-
+declare global {
+  interface NexusGenCustomOutputMethods<TypeName extends string> {
+    /**
+     * Adds a Relay-style connection to the type, with numerous options for configuration
+     *
+     * @see https://nexusjs.org/docs/plugins/connection
+     */
+    connectionField<FieldName extends string>(
+      fieldName: FieldName,
+      config: connectionPluginCore.ConnectionFieldConfig<TypeName, FieldName>
+    ): void
+  }
+}
 
 
 declare global {
@@ -29,7 +42,21 @@ export interface NexusGenScalars {
 
 export interface NexusGenObjects {
   DataTable: prisma.DataTable;
+  DataTableConnection: { // root type
+    edges?: Array<NexusGenRootTypes['DataTableEdge'] | null> | null; // [DataTableEdge]
+    pageInfo: NexusGenRootTypes['PageInfo']; // PageInfo!
+  }
+  DataTableEdge: { // root type
+    cursor: string; // String!
+    node?: NexusGenRootTypes['DataTable'] | null; // DataTable
+  }
   Mutation: {};
+  PageInfo: { // root type
+    endCursor?: string | null; // String
+    hasNextPage: boolean; // Boolean!
+    hasPreviousPage: boolean; // Boolean!
+    startCursor?: string | null; // String
+  }
   Query: {};
 }
 
@@ -50,11 +77,26 @@ export interface NexusGenFieldTypes {
     name: string | null; // String
     status: string | null; // String
   }
+  DataTableConnection: { // field return type
+    edges: Array<NexusGenRootTypes['DataTableEdge'] | null> | null; // [DataTableEdge]
+    pageInfo: NexusGenRootTypes['PageInfo']; // PageInfo!
+  }
+  DataTableEdge: { // field return type
+    cursor: string; // String!
+    node: NexusGenRootTypes['DataTable'] | null; // DataTable
+  }
   Mutation: { // field return type
     createDataTable: NexusGenRootTypes['DataTable']; // DataTable!
     ping: string; // String!
   }
+  PageInfo: { // field return type
+    endCursor: string | null; // String
+    hasNextPage: boolean; // Boolean!
+    hasPreviousPage: boolean; // Boolean!
+    startCursor: string | null; // String
+  }
   Query: { // field return type
+    dataTables: NexusGenRootTypes['DataTableConnection'] | null; // DataTableConnection
     drafts: Array<NexusGenRootTypes['DataTable'] | null>; // [DataTable]!
     ok: boolean; // Boolean!
   }
@@ -67,11 +109,26 @@ export interface NexusGenFieldTypeNames {
     name: 'String'
     status: 'String'
   }
+  DataTableConnection: { // field return type name
+    edges: 'DataTableEdge'
+    pageInfo: 'PageInfo'
+  }
+  DataTableEdge: { // field return type name
+    cursor: 'String'
+    node: 'DataTable'
+  }
   Mutation: { // field return type name
     createDataTable: 'DataTable'
     ping: 'String'
   }
+  PageInfo: { // field return type name
+    endCursor: 'String'
+    hasNextPage: 'Boolean'
+    hasPreviousPage: 'Boolean'
+    startCursor: 'String'
+  }
   Query: { // field return type name
+    dataTables: 'DataTableConnection'
     drafts: 'DataTable'
     ok: 'Boolean'
   }
@@ -85,6 +142,14 @@ export interface NexusGenArgTypes {
     }
     ping: { // args
       text: string; // String!
+    }
+  }
+  Query: {
+    dataTables: { // args
+      after?: string | null; // String
+      before?: string | null; // String
+      first?: number | null; // Int
+      last?: number | null; // Int
     }
   }
 }
@@ -150,6 +215,7 @@ declare global {
   interface NexusGenPluginTypeConfig<TypeName extends string> {
   }
   interface NexusGenPluginFieldConfig<TypeName extends string, FieldName extends string> {
+    
   }
   interface NexusGenPluginInputFieldConfig<TypeName extends string, FieldName extends string> {
   }

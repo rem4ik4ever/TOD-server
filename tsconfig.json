@@ -2,9 +2,9 @@
   "compilerOptions": {
     "esModuleInterop": true,
     "outDir": "dist",
-    "rootDir": "src",
+    "rootDir": ".",
     "lib": ["esnext"],
     "strict": true
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "prisma/**/*"]
 }

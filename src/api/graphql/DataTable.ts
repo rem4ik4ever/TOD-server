@@ -1,3 +1,4 @@
+import { connectionFromArray } from 'graphql-relay'
 import { extendType, nonNull, objectType, stringArg } from 'nexus'
 import { Context } from '../context'
 
@@ -18,6 +19,14 @@ export const DraftTablesQuery = extendType({
       type: 'DataTable',
       resolve: async (_, __, ctx: Context) => {
         return await ctx.db.dataTable.findMany({ where: { status: 'draft' } })
+      }
+    })
+    t.connectionField('dataTables', {
+      type: 'DataTable',
+      async resolve (_, args: any, ctx, info) {
+        const result = await ctx.db.dataTable.findMany({ take: 100 })
+        console.log({ info, result, args })
+        return connectionFromArray(result, args)
       }
     })
   }
