@@ -20,13 +20,34 @@ declare global {
     ): void
   }
 }
-
+declare global {
+  interface NexusGenCustomOutputProperties<TypeName extends string> {
+    crud: NexusPrisma<TypeName, 'crud'>
+    model: NexusPrisma<TypeName, 'model'>
+  }
+}
 
 declare global {
   interface NexusGen extends NexusGenTypes {}
 }
 
 export interface NexusGenInputs {
+  DataTableCreateInput: { // input type
+    fileKey: string; // String!
+    name: string; // String!
+    status: string; // String!
+  }
+  DataTableUpdateInput: { // input type
+    fileKey?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    name?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    status?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+  }
+  DataTableWhereUniqueInput: { // input type
+    id?: number | null; // Int
+  }
+  StringFieldUpdateOperationsInput: { // input type
+    set?: string | null; // String
+  }
 }
 
 export interface NexusGenEnums {
@@ -86,8 +107,10 @@ export interface NexusGenFieldTypes {
     node: NexusGenRootTypes['DataTable'] | null; // DataTable
   }
   Mutation: { // field return type
-    createDataTable: NexusGenRootTypes['DataTable']; // DataTable!
+    createOneDataTable: NexusGenRootTypes['DataTable']; // DataTable!
+    deleteOneDataTable: NexusGenRootTypes['DataTable'] | null; // DataTable
     ping: string; // String!
+    updateOneDataTable: NexusGenRootTypes['DataTable'] | null; // DataTable
   }
   PageInfo: { // field return type
     endCursor: string | null; // String
@@ -96,6 +119,7 @@ export interface NexusGenFieldTypes {
     startCursor: string | null; // String
   }
   Query: { // field return type
+    dataTable: NexusGenRootTypes['DataTable'] | null; // DataTable
     dataTables: NexusGenRootTypes['DataTableConnection'] | null; // DataTableConnection
     drafts: Array<NexusGenRootTypes['DataTable'] | null>; // [DataTable]!
     ok: boolean; // Boolean!
@@ -118,8 +142,10 @@ export interface NexusGenFieldTypeNames {
     node: 'DataTable'
   }
   Mutation: { // field return type name
-    createDataTable: 'DataTable'
+    createOneDataTable: 'DataTable'
+    deleteOneDataTable: 'DataTable'
     ping: 'String'
+    updateOneDataTable: 'DataTable'
   }
   PageInfo: { // field return type name
     endCursor: 'String'
@@ -128,6 +154,7 @@ export interface NexusGenFieldTypeNames {
     startCursor: 'String'
   }
   Query: { // field return type name
+    dataTable: 'DataTable'
     dataTables: 'DataTableConnection'
     drafts: 'DataTable'
     ok: 'Boolean'
@@ -136,15 +163,24 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Mutation: {
-    createDataTable: { // args
-      fileKey: string; // String!
-      name: string; // String!
+    createOneDataTable: { // args
+      data: NexusGenInputs['DataTableCreateInput']; // DataTableCreateInput!
+    }
+    deleteOneDataTable: { // args
+      where: NexusGenInputs['DataTableWhereUniqueInput']; // DataTableWhereUniqueInput!
     }
     ping: { // args
       text: string; // String!
     }
+    updateOneDataTable: { // args
+      data: NexusGenInputs['DataTableUpdateInput']; // DataTableUpdateInput!
+      where: NexusGenInputs['DataTableWhereUniqueInput']; // DataTableWhereUniqueInput!
+    }
   }
   Query: {
+    dataTable: { // args
+      where: NexusGenInputs['DataTableWhereUniqueInput']; // DataTableWhereUniqueInput!
+    }
     dataTables: { // args
       after?: string | null; // String
       before?: string | null; // String
@@ -162,7 +198,7 @@ export interface NexusGenTypeInterfaces {
 
 export type NexusGenObjectNames = keyof NexusGenObjects;
 
-export type NexusGenInputNames = never;
+export type NexusGenInputNames = keyof NexusGenInputs;
 
 export type NexusGenEnumNames = never;
 

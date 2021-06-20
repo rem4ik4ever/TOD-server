@@ -21,6 +21,12 @@ type DataTableConnection {
   pageInfo: PageInfo!
 }
 
+input DataTableCreateInput {
+  fileKey: String!
+  name: String!
+  status: String!
+}
+
 type DataTableEdge {
   """https://facebook.github.io/relay/graphql/connections.htm#sec-Cursor"""
   cursor: String!
@@ -29,9 +35,21 @@ type DataTableEdge {
   node: DataTable
 }
 
+input DataTableUpdateInput {
+  fileKey: StringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  status: StringFieldUpdateOperationsInput
+}
+
+input DataTableWhereUniqueInput {
+  id: Int
+}
+
 type Mutation {
-  createDataTable(fileKey: String!, name: String!): DataTable!
+  createOneDataTable(data: DataTableCreateInput!): DataTable!
+  deleteOneDataTable(where: DataTableWhereUniqueInput!): DataTable
   ping(text: String!): String!
+  updateOneDataTable(data: DataTableUpdateInput!, where: DataTableWhereUniqueInput!): DataTable
 }
 
 """
@@ -60,6 +78,7 @@ type PageInfo {
 }
 
 type Query {
+  dataTable(where: DataTableWhereUniqueInput!): DataTable
   dataTables(
     """Returns the elements in the list that come after the specified cursor"""
     after: String
@@ -75,4 +94,8 @@ type Query {
   ): DataTableConnection
   drafts: [DataTable]!
   ok: Boolean!
+}
+
+input StringFieldUpdateOperationsInput {
+  set: String
 }
