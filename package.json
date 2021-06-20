@@ -19,16 +19,16 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@prisma/client": "2.23",
+    "@prisma/client": "^2.25.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-graphql": "^0.12.0",
     "faker": "^5.5.3",
     "graphql": "^15.5.0",
     "graphql-relay": "^0.7.0",
+    "graphql-scalars": "^1.10.0",
     "lodash": "^4.17.21",
     "nexus": "^1.0.0",
-    "nexus-plugin-prisma": "^0.35.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

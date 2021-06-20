@@ -1,14 +1,16 @@
 import { connectionFromArray } from 'graphql-relay'
-import { extendType, objectType } from 'nexus'
+import { arg, extendType, inputObjectType, mutationField, nonNull, objectType } from 'nexus'
 import { Context } from '../context'
 
 export const DataTable = objectType({
   name: 'DataTable',
   definition (t) {
-    t.nonNull.id('id')
+    t.int('id')
     t.string('name')
     t.string('status')
-    t.string('fileKey')
+    t.nullable.string('fileKey')
+    t.field('createdAt', { type: 'DateTime' })
+    t.field('updatedAt', { type: 'DateTime' })
   }
 })
 
@@ -29,15 +31,27 @@ export const DraftTablesQuery = extendType({
         return connectionFromArray(result, args)
       }
     })
-    t.crud.dataTable()
   }
 })
 
-export const CreateDataTable = extendType({
-  type: 'Mutation',
+export const DataTableInputType = inputObjectType({
+  name: 'DataTableInput',
   definition (t) {
-    t.crud.createOneDataTable()
-    t.crud.updateOneDataTable()
-    t.crud.deleteOneDataTable()
+    t.nonNull.string('name')
+    t.nonNull.string('status')
+    t.nonNull.string('fileKey')
   }
+})
+
+export const CreateDataTable = mutationField(t => {
+  t.field('createDataTable', {
+    type: 'DataTable',
+    args: {
+      input: nonNull(arg({ type: 'DataTableInput' }))
+    },
+    resolve (_, args, ctx) {
+      console.log(args)
+      return ctx.prisma.dataTable.create({ data: args.input });
+    }
+  })
 })

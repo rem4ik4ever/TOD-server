@@ -3,12 +3,23 @@
  * Do not make changes to this file directly
  */
 
-import * as prisma from "./../node_modules/.prisma/client/index"
+
 import { Context } from "./api/context"
 import { core, connectionPluginCore } from "nexus"
-
+declare global {
+  interface NexusGenCustomInputMethods<TypeName extends string> {
+    /**
+     * A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+     */
+    date<FieldName extends string>(fieldName: FieldName, opts?: core.CommonInputFieldConfig<TypeName, FieldName>): void // "DateTime";
+  }
+}
 declare global {
   interface NexusGenCustomOutputMethods<TypeName extends string> {
+    /**
+     * A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+     */
+    date<FieldName extends string>(fieldName: FieldName, ...opts: core.ScalarOutSpread<TypeName, FieldName>): void // "DateTime";
     /**
      * Adds a Relay-style connection to the type, with numerous options for configuration
      *
@@ -20,33 +31,17 @@ declare global {
     ): void
   }
 }
-declare global {
-  interface NexusGenCustomOutputProperties<TypeName extends string> {
-    crud: NexusPrisma<TypeName, 'crud'>
-    model: NexusPrisma<TypeName, 'model'>
-  }
-}
+
 
 declare global {
   interface NexusGen extends NexusGenTypes {}
 }
 
 export interface NexusGenInputs {
-  DataTableCreateInput: { // input type
+  DataTableInput: { // input type
     fileKey: string; // String!
     name: string; // String!
     status: string; // String!
-  }
-  DataTableUpdateInput: { // input type
-    fileKey?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
-    name?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
-    status?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
-  }
-  DataTableWhereUniqueInput: { // input type
-    id?: number | null; // Int
-  }
-  StringFieldUpdateOperationsInput: { // input type
-    set?: string | null; // String
   }
 }
 
@@ -59,10 +54,18 @@ export interface NexusGenScalars {
   Float: number
   Boolean: boolean
   ID: string
+  DateTime: any
 }
 
 export interface NexusGenObjects {
-  DataTable: prisma.DataTable;
+  DataTable: { // root type
+    createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
+    fileKey?: string | null; // String
+    id?: number | null; // Int
+    name?: string | null; // String
+    status?: string | null; // String
+    updatedAt?: NexusGenScalars['DateTime'] | null; // DateTime
+  }
   DataTableConnection: { // root type
     edges?: Array<NexusGenRootTypes['DataTableEdge'] | null> | null; // [DataTableEdge]
     pageInfo: NexusGenRootTypes['PageInfo']; // PageInfo!
@@ -93,10 +96,12 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
   DataTable: { // field return type
+    createdAt: NexusGenScalars['DateTime'] | null; // DateTime
     fileKey: string | null; // String
-    id: string; // ID!
+    id: number | null; // Int
     name: string | null; // String
     status: string | null; // String
+    updatedAt: NexusGenScalars['DateTime'] | null; // DateTime
   }
   DataTableConnection: { // field return type
     edges: Array<NexusGenRootTypes['DataTableEdge'] | null> | null; // [DataTableEdge]
@@ -107,10 +112,8 @@ export interface NexusGenFieldTypes {
     node: NexusGenRootTypes['DataTable'] | null; // DataTable
   }
   Mutation: { // field return type
-    createOneDataTable: NexusGenRootTypes['DataTable']; // DataTable!
-    deleteOneDataTable: NexusGenRootTypes['DataTable'] | null; // DataTable
+    createDataTable: NexusGenRootTypes['DataTable'] | null; // DataTable
     ping: string; // String!
-    updateOneDataTable: NexusGenRootTypes['DataTable'] | null; // DataTable
   }
   PageInfo: { // field return type
     endCursor: string | null; // String
@@ -119,7 +122,6 @@ export interface NexusGenFieldTypes {
     startCursor: string | null; // String
   }
   Query: { // field return type
-    dataTable: NexusGenRootTypes['DataTable'] | null; // DataTable
     dataTables: NexusGenRootTypes['DataTableConnection'] | null; // DataTableConnection
     drafts: Array<NexusGenRootTypes['DataTable'] | null>; // [DataTable]!
     ok: boolean; // Boolean!
@@ -128,10 +130,12 @@ export interface NexusGenFieldTypes {
 
 export interface NexusGenFieldTypeNames {
   DataTable: { // field return type name
+    createdAt: 'DateTime'
     fileKey: 'String'
-    id: 'ID'
+    id: 'Int'
     name: 'String'
     status: 'String'
+    updatedAt: 'DateTime'
   }
   DataTableConnection: { // field return type name
     edges: 'DataTableEdge'
@@ -142,10 +146,8 @@ export interface NexusGenFieldTypeNames {
     node: 'DataTable'
   }
   Mutation: { // field return type name
-    createOneDataTable: 'DataTable'
-    deleteOneDataTable: 'DataTable'
+    createDataTable: 'DataTable'
     ping: 'String'
-    updateOneDataTable: 'DataTable'
   }
   PageInfo: { // field return type name
     endCursor: 'String'
@@ -154,7 +156,6 @@ export interface NexusGenFieldTypeNames {
     startCursor: 'String'
   }
   Query: { // field return type name
-    dataTable: 'DataTable'
     dataTables: 'DataTableConnection'
     drafts: 'DataTable'
     ok: 'Boolean'
@@ -163,24 +164,14 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Mutation: {
-    createOneDataTable: { // args
-      data: NexusGenInputs['DataTableCreateInput']; // DataTableCreateInput!
-    }
-    deleteOneDataTable: { // args
-      where: NexusGenInputs['DataTableWhereUniqueInput']; // DataTableWhereUniqueInput!
+    createDataTable: { // args
+      input: NexusGenInputs['DataTableInput']; // DataTableInput!
     }
     ping: { // args
       text: string; // String!
     }
-    updateOneDataTable: { // args
-      data: NexusGenInputs['DataTableUpdateInput']; // DataTableUpdateInput!
-      where: NexusGenInputs['DataTableWhereUniqueInput']; // DataTableWhereUniqueInput!
-    }
   }
   Query: {
-    dataTable: { // args
-      where: NexusGenInputs['DataTableWhereUniqueInput']; // DataTableWhereUniqueInput!
-    }
     dataTables: { // args
       after?: string | null; // String
       before?: string | null; // String

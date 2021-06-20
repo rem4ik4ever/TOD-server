@@ -3,10 +3,12 @@
 
 
 type DataTable {
+  createdAt: DateTime
   fileKey: String
-  id: ID!
+  id: Int
   name: String
   status: String
+  updatedAt: DateTime
 }
 
 type DataTableConnection {
@@ -21,12 +23,6 @@ type DataTableConnection {
   pageInfo: PageInfo!
 }
 
-input DataTableCreateInput {
-  fileKey: String!
-  name: String!
-  status: String!
-}
-
 type DataTableEdge {
   """https://facebook.github.io/relay/graphql/connections.htm#sec-Cursor"""
   cursor: String!
@@ -35,21 +31,20 @@ type DataTableEdge {
   node: DataTable
 }
 
-input DataTableUpdateInput {
-  fileKey: StringFieldUpdateOperationsInput
-  name: StringFieldUpdateOperationsInput
-  status: StringFieldUpdateOperationsInput
+input DataTableInput {
+  fileKey: String!
+  name: String!
+  status: String!
 }
 
-input DataTableWhereUniqueInput {
-  id: Int
-}
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar DateTime
 
 type Mutation {
-  createOneDataTable(data: DataTableCreateInput!): DataTable!
-  deleteOneDataTable(where: DataTableWhereUniqueInput!): DataTable
+  createDataTable(input: DataTableInput!): DataTable
   ping(text: String!): String!
-  updateOneDataTable(data: DataTableUpdateInput!, where: DataTableWhereUniqueInput!): DataTable
 }
 
 """
@@ -78,7 +73,6 @@ type PageInfo {
 }
 
 type Query {
-  dataTable(where: DataTableWhereUniqueInput!): DataTable
   dataTables(
     """Returns the elements in the list that come after the specified cursor"""
     after: String
@@ -94,8 +88,4 @@ type Query {
   ): DataTableConnection
   drafts: [DataTable]!
   ok: Boolean!
-}
-
-input StringFieldUpdateOperationsInput {
-  set: String
 }
