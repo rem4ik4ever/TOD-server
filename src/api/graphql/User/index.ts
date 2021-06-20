@@ -1,3 +1,3 @@
-// export * from './User'
-// export * from './UserQueries'
-// export * from './UserMutations'
+export * from './model'
+// export * from './queries'
+// export * from './mutations'
