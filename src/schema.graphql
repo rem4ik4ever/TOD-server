@@ -45,6 +45,7 @@ scalar DateTime
 type Mutation {
   createDataTable(input: DataTableInput!): DataTable
   ping(text: String!): String!
+  register(input: RegisterUserInput!): User
 }
 
 """
@@ -88,4 +89,20 @@ type Query {
   ): DataTableConnection
   drafts: [DataTable]!
   ok: Boolean!
+}
+
+input RegisterUserInput {
+  email: String!
+  password: String!
+  username: String!
+}
+
+type User {
+  confirmed: Boolean!
+  createdAt: DateTime!
+  email: String!
+  id: String
+  password: String!
+  updatedAt: DateTime!
+  username: String!
 }

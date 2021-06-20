@@ -43,6 +43,11 @@ export interface NexusGenInputs {
     name: string; // String!
     status: string; // String!
   }
+  RegisterUserInput: { // input type
+    email: string; // String!
+    password: string; // String!
+    username: string; // String!
+  }
 }
 
 export interface NexusGenEnums {
@@ -82,6 +87,15 @@ export interface NexusGenObjects {
     startCursor?: string | null; // String
   }
   Query: {};
+  User: { // root type
+    confirmed: boolean; // Boolean!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    email: string; // String!
+    id?: string | null; // String
+    password: string; // String!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    username: string; // String!
+  }
 }
 
 export interface NexusGenInterfaces {
@@ -114,6 +128,7 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     createDataTable: NexusGenRootTypes['DataTable'] | null; // DataTable
     ping: string; // String!
+    register: NexusGenRootTypes['User'] | null; // User
   }
   PageInfo: { // field return type
     endCursor: string | null; // String
@@ -125,6 +140,15 @@ export interface NexusGenFieldTypes {
     dataTables: NexusGenRootTypes['DataTableConnection'] | null; // DataTableConnection
     drafts: Array<NexusGenRootTypes['DataTable'] | null>; // [DataTable]!
     ok: boolean; // Boolean!
+  }
+  User: { // field return type
+    confirmed: boolean; // Boolean!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    email: string; // String!
+    id: string | null; // String
+    password: string; // String!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    username: string; // String!
   }
 }
 
@@ -148,6 +172,7 @@ export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     createDataTable: 'DataTable'
     ping: 'String'
+    register: 'User'
   }
   PageInfo: { // field return type name
     endCursor: 'String'
@@ -160,6 +185,15 @@ export interface NexusGenFieldTypeNames {
     drafts: 'DataTable'
     ok: 'Boolean'
   }
+  User: { // field return type name
+    confirmed: 'Boolean'
+    createdAt: 'DateTime'
+    email: 'String'
+    id: 'String'
+    password: 'String'
+    updatedAt: 'DateTime'
+    username: 'String'
+  }
 }
 
 export interface NexusGenArgTypes {
@@ -169,6 +203,9 @@ export interface NexusGenArgTypes {
     }
     ping: { // args
       text: string; // String!
+    }
+    register: { // args
+      input: NexusGenInputs['RegisterUserInput']; // RegisterUserInput!
     }
   }
   Query: {

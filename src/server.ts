@@ -27,10 +27,10 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
-app.use('/graphql', graphqlHTTP({
+app.use('/graphql', graphqlHTTP((request) => ({
   schema,
-  context: createContext,
+  context: createContext(request),
   graphiql: true
-}))
+})))
 
 export default app;

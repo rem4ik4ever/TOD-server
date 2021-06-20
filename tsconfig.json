@@ -8,10 +8,10 @@
     "moduleResolution": "node",
     "sourceMap": true,
     "outDir": "dist",
-    "rootDir": ".",
-    "baseUrl": ".",
+    "rootDir": "./",
+    "baseUrl": "./",
     "paths": {
-      "*": ["node_modules/*"]
+      "*": ["*"]
     }
   },
   "include": ["src/**/*", "prisma/**/*"]

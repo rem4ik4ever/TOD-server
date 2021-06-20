@@ -23,15 +23,17 @@ export const registerUser = async ({ userResource, data }: RegisterUser): Promis
   // check password strength
   // hash password
   const hashedPassword = await hash(data.password, salt);
-  const { result: user, error } = await userResource.createUser({
+  const payload = {
     ...data,
     password: hashedPassword
-  });
+  }
+  console.log({ payload })
+  const { result: user, error } = await userResource.createUser(payload);
+  if (error != null) {
+    throw new Error(error.message)
+  }
   if (user == null) {
     throw new Error('system_error')
-  }
-  if (error != null) {
-    throw new Error(error.message);
   }
   // send confirmation email
 
