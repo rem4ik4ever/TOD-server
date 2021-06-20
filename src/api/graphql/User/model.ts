@@ -3,7 +3,7 @@ import { objectType } from 'nexus';
 export const User = objectType({
   name: 'User',
   definition (t) {
-    t.id('id')
+    t.string('id')
     t.nonNull.string('username')
     t.nonNull.string('email')
     t.nonNull.string('password')
