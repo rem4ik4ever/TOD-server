@@ -29,6 +29,7 @@ export const registerUser = async ({ userResource, data }: RegisterUser): Promis
   }
   console.log({ payload })
   const { result: user, error } = await userResource.createUser(payload);
+  console.log({ user, error })
   if (error != null) {
     throw new Error(error.message)
   }

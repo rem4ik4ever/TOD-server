@@ -1,12 +1,12 @@
 import { registerUser } from '../registerUser';
-import { userResourceMock } from './userResourceMock';
+import { userResourceMock } from '../__mocks__/userResourceMock';
 
 let userResource: any = null;
 describe('#registerUser', () => {
+  beforeEach(() => {
+    userResource = userResourceMock()
+  })
   describe('when user does not exist', () => {
-    beforeEach(() => {
-      userResource = userResourceMock()
-    })
     it('registers user', async () => {
       const data = {
         username: 'adam',
@@ -19,7 +19,10 @@ describe('#registerUser', () => {
       expect(user.confirmed).toBeFalsy()
       expect(user.password).not.toEqual('qwerty')
     });
-    it('fails to register due to existing email', (done) => {
+  })
+
+  describe('when user exists', () => {
+    it('throws an error', (done) => {
       const data = {
         username: 'something',
         email: 'exists@example.com',
