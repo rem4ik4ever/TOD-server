@@ -27,4 +27,15 @@ model User {
   confirmed Boolean @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  emailConfirmation EmailConfirmation?
+}
+
+model EmailConfirmation {
+  id String @id @default(uuid())
+  confirmed Boolean @default(false)
+  userId String
+  user User @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

@@ -15,7 +15,6 @@ export interface UserResource {
 }
 
 export function userResource ({ client }: {client: PrismaClient}): UserResource {
-  console.log({ client })
   const createUser = async (data: Prisma.UserCreateInput): UserResourceResponse => {
     try {
       const result = await client.user.create({ data })
