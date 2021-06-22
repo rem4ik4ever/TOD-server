@@ -1,5 +1,6 @@
-import { arg, inputObjectType, mutationField, nonNull } from 'nexus';
+import { arg, inputObjectType, mutationField, nonNull, stringArg } from 'nexus';
 import { registerUser } from '../../domains/authentication';
+import { confirmUserEmail } from '../../domains/authentication/confirmUserEmail';
 import { sendConfirmUserEmail } from '../../domains/authentication/sendConfirmUserEmail';
 import { userResource } from '../../resources';
 import { emailConfirmationResource } from '../../resources/emailConfirmationResource';
@@ -33,6 +34,23 @@ export const Register = mutationField(t => {
         emailConfirmationResource: emailConfirmationResource({ client: ctx.prisma }),
         user,
         transporter: ctx.transporter
+      })
+      return user;
+    }
+  })
+})
+
+export const ConfirmEmail = mutationField(t => {
+  t.field('confirmEmail', {
+    type: 'User',
+    args: {
+      token: nonNull(stringArg())
+    },
+    resolve: async (_, args, ctx) => {
+      const user = await confirmUserEmail({
+        userResource: userResource({ client: ctx.prisma }),
+        emailConfirmationResource: emailConfirmationResource({ client: ctx.prisma }),
+        token: args.token
       })
       return user;
     }

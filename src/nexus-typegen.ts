@@ -126,6 +126,7 @@ export interface NexusGenFieldTypes {
     node: NexusGenRootTypes['DataTable'] | null; // DataTable
   }
   Mutation: { // field return type
+    confirmEmail: NexusGenRootTypes['User'] | null; // User
     createDataTable: NexusGenRootTypes['DataTable'] | null; // DataTable
     ping: string; // String!
     register: NexusGenRootTypes['User'] | null; // User
@@ -170,6 +171,7 @@ export interface NexusGenFieldTypeNames {
     node: 'DataTable'
   }
   Mutation: { // field return type name
+    confirmEmail: 'User'
     createDataTable: 'DataTable'
     ping: 'String'
     register: 'User'
@@ -198,6 +200,9 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Mutation: {
+    confirmEmail: { // args
+      token: string; // String!
+    }
     createDataTable: { // args
       input: NexusGenInputs['DataTableInput']; // DataTableInput!
     }

@@ -4,7 +4,9 @@ interface ActionError {
   message: string
 }
 
-export type UserResourceResponse = Promise<{result?: User, error?: ActionError|undefined|null}>
+export interface FailResponse {result?: null|undefined, error: ActionError}
+export interface SuccessResponse {result: User, error?: undefined|null}
+export type UserResourceResponse = Promise<SuccessResponse|FailResponse>
 
 export interface UserResource {
   createUser: (data: Prisma.UserCreateInput) => UserResourceResponse
