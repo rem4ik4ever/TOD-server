@@ -43,6 +43,10 @@ export interface NexusGenInputs {
     name: string; // String!
     status: string; // String!
   }
+  LoginUserInput: { // input type
+    email: string; // String!
+    password: string; // String!
+  }
   RegisterUserInput: { // input type
     email: string; // String!
     password: string; // String!
@@ -128,6 +132,7 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     confirmEmail: NexusGenRootTypes['User'] | null; // User
     createDataTable: NexusGenRootTypes['DataTable'] | null; // DataTable
+    login: NexusGenRootTypes['User'] | null; // User
     ping: string; // String!
     register: NexusGenRootTypes['User'] | null; // User
   }
@@ -173,6 +178,7 @@ export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     confirmEmail: 'User'
     createDataTable: 'DataTable'
+    login: 'User'
     ping: 'String'
     register: 'User'
   }
@@ -205,6 +211,9 @@ export interface NexusGenArgTypes {
     }
     createDataTable: { // args
       input: NexusGenInputs['DataTableInput']; // DataTableInput!
+    }
+    login: { // args
+      input: NexusGenInputs['LoginUserInput']; // LoginUserInput!
     }
     ping: { // args
       text: string; // String!
