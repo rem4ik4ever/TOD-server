@@ -11,31 +11,60 @@ generator client {
 }
 
 model DataTable {
-  id Int @id @default(autoincrement())
-  name String
-  status String @default("DRAFT")
+  id      Int     @id @default(autoincrement())
+  name    String
+  status  String  @default("DRAFT")
   fileKey String?
+
+  columns   Column[]
+  entries   Entry[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model User {
-  id String @id @default(uuid())
-  username String
-  email String @unique
-  password String 
-  confirmed Boolean @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                String             @id @default(uuid())
+  username          String
+  email             String             @unique
+  password          String
+  confirmed         Boolean            @default(false)
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
   emailConfirmation EmailConfirmation?
 }
 
 model EmailConfirmation {
-  id String @id @default(uuid())
+  id        String  @id @default(uuid())
   confirmed Boolean @default(false)
-  userId String
-  user User @relation(fields: [userId], references: [id])
+  userId    String
+  user      User    @relation(fields: [userId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Column {
+  id       String    @id @default(uuid())
+  field    String
+  header   String
+  width    String
+  minWidth Int?
+  align    String
+  hidden   Boolean   @default(false)
+  tableId  Int
+  table    DataTable @relation(fields: [tableId], references: [id])
+}
+
+model Entry {
+  id      String       @id @default(uuid())
+  tableId Int
+  table   DataTable    @relation(fields: [tableId], references: [id])
+  values  FieldValue[]
+}
+
+model FieldValue {
+  id      String @id @default(uuid())
+  value   String
+  entryId String
+  entry   Entry  @relation(fields: [entryId], references: [id])
 }

@@ -67,6 +67,10 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  AuthType: { // root type
+    token?: string | null; // String
+    user?: NexusGenRootTypes['User'] | null; // User
+  }
   DataTable: { // root type
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     fileKey?: string | null; // String
@@ -113,6 +117,10 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
+  AuthType: { // field return type
+    token: string | null; // String
+    user: NexusGenRootTypes['User'] | null; // User
+  }
   DataTable: { // field return type
     createdAt: NexusGenScalars['DateTime'] | null; // DateTime
     fileKey: string | null; // String
@@ -132,7 +140,7 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     confirmEmail: NexusGenRootTypes['User'] | null; // User
     createDataTable: NexusGenRootTypes['DataTable'] | null; // DataTable
-    login: NexusGenRootTypes['User'] | null; // User
+    login: NexusGenRootTypes['AuthType'] | null; // AuthType
     ping: string; // String!
     register: NexusGenRootTypes['User'] | null; // User
   }
@@ -159,6 +167,10 @@ export interface NexusGenFieldTypes {
 }
 
 export interface NexusGenFieldTypeNames {
+  AuthType: { // field return type name
+    token: 'String'
+    user: 'User'
+  }
   DataTable: { // field return type name
     createdAt: 'DateTime'
     fileKey: 'String'
@@ -178,7 +190,7 @@ export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     confirmEmail: 'User'
     createDataTable: 'DataTable'
-    login: 'User'
+    login: 'AuthType'
     ping: 'String'
     register: 'User'
   }

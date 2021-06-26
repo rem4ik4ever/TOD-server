@@ -2,6 +2,11 @@
 ### Do not make changes to this file directly
 
 
+type AuthType {
+  token: String
+  user: User
+}
+
 type DataTable {
   createdAt: DateTime
   fileKey: String
@@ -50,7 +55,7 @@ input LoginUserInput {
 type Mutation {
   confirmEmail(token: String!): User
   createDataTable(input: DataTableInput!): DataTable
-  login(input: LoginUserInput!): User
+  login(input: LoginUserInput!): AuthType
   ping(text: String!): String!
   register(input: RegisterUserInput!): User
 }
