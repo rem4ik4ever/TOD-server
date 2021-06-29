@@ -1,5 +1,5 @@
 import { authenticateUser } from '../authenticateUser';
-import { userResourceMock } from '../__mocks__/userResourceMock';
+import { userResourceMock } from '../../__mocks__/userResource.mock';
 
 jest.mock('bcryptjs');
 

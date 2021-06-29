@@ -4,6 +4,7 @@ import { SendConfirmUserEmail, sendConfirmUserEmail } from 'src/api/domains/auth
 import { populateTable } from 'src/api/domains/populateTable';
 import { columnResource, emailConfirmationResource, tableResource } from 'src/api/resources';
 import { setupNodemailer } from 'src/config/nodemailerConfig';
+import { entryResource } from '../api/resources/entryResource';
 
 export const jobs = {
   add: {
@@ -64,6 +65,7 @@ export const jobs = {
         await populateTable({
           tableResource: tableResource({ client: prisma }),
           columnResource: columnResource({ client: prisma }),
+          entryResource: entryResource({ client: prisma }),
           tableId
         })
       } catch (error) {

@@ -1,14 +1,14 @@
 // tests/__helpers.ts                                            // 1
 import getPort, { makeRange } from 'get-port';
 import { GraphQLClient } from 'graphql-request';
-import server from '../../../server';
+import { initialize } from '../../../server';
 
 interface TestContext {
   client: GraphQLClient | null
 }
-export function createTestContext (): TestContext {
+export async function createTestContext (): Promise<TestContext> {
   const ctx: TestContext = { client: null };
-  const graphqlCtx = graphqlTestContext();
+  const graphqlCtx = await graphqlTestContext();
   beforeEach(async () => { // 2
     const client = await graphqlCtx.before();
     Object.assign(ctx, {
@@ -21,7 +21,8 @@ export function createTestContext (): TestContext {
   return ctx; // 8
 }
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-function graphqlTestContext () {
+async function graphqlTestContext () {
+  const { app: server } = await initialize()
   let serverInstance: any = null;
   return {
     async before () {

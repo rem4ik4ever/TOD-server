@@ -1,9 +1,12 @@
-import server from '../../../server';
+import { initialize } from '../../../server';
 import supertest from 'supertest';
 
-const request = supertest(server);
-
 describe('DataTable', () => {
+  let request: any = null;
+  beforeEach(async () => {
+    const { app: server } = await initialize()
+    request = supertest(server);
+  })
   test('fetch draft DataTables', async () => {
     const response = await request
       .post('/graphql')

@@ -1,5 +1,5 @@
 import { registerUser } from '../registerUser';
-import { userResourceMock } from '../__mocks__/userResourceMock';
+import { userResourceMock } from '../../__mocks__/userResource.mock';
 
 let userResource: any = null;
 describe('#registerUser', () => {

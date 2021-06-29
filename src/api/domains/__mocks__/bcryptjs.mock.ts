@@ -3,7 +3,6 @@ const bcryptjs: any = jest.createMockFromModule('bcryptjs')
 
 const compare = async (text: string, _hash: string) => {
   return await new Promise(resolve => {
-    console.log({ text, hash })
     if (text === 'hashyhash') {
       resolve(true)
     } else {
