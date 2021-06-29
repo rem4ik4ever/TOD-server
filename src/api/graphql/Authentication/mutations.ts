@@ -2,7 +2,6 @@ import { arg, inputObjectType, mutationField, nonNull, stringArg } from 'nexus';
 import { registerUser } from '../../domains/authentication';
 import { authenticateUser } from '../../domains/authentication/authenticateUser';
 import { confirmUserEmail } from '../../domains/authentication/confirmUserEmail';
-import { sendConfirmUserEmail } from '../../domains/authentication/sendConfirmUserEmail';
 import { userResource } from '../../resources';
 import { emailConfirmationResource } from '../../resources/emailConfirmationResource';
 import { compare } from 'bcryptjs';
@@ -41,11 +40,12 @@ export const Register = mutationField(t => {
           password
         }
       })
-      await sendConfirmUserEmail({
-        emailConfirmationResource: emailConfirmationResource({ client: ctx.prisma }),
-        user,
-        transporter: ctx.transporter
-      })
+      try {
+        await ctx.resque.queue.enqueue('default', 'sendConfirmationEmail', [user.id])
+      } catch (error) {
+        // @TODO notify bugsnag
+        console.log(error)
+      }
       return user;
     }
   })

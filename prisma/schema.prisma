@@ -44,15 +44,16 @@ model EmailConfirmation {
 }
 
 model Column {
-  id       String    @id @default(uuid())
+  id       String       @id @default(uuid())
   field    String
   header   String
   width    String
   minWidth Int?
   align    String
-  hidden   Boolean   @default(false)
+  hidden   Boolean      @default(false)
   tableId  Int
-  table    DataTable @relation(fields: [tableId], references: [id])
+  table    DataTable    @relation(fields: [tableId], references: [id])
+  values   FieldValue[]
 }
 
 model Entry {
@@ -63,8 +64,10 @@ model Entry {
 }
 
 model FieldValue {
-  id      String @id @default(uuid())
-  value   String
-  entryId String
-  entry   Entry  @relation(fields: [entryId], references: [id])
+  id       String @id @default(uuid())
+  value    String
+  entryId  String
+  entry    Entry  @relation(fields: [entryId], references: [id])
+  columnId String
+  column   Column @relation(fields: [columnId], references: [id])
 }

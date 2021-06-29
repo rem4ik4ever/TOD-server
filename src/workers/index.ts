@@ -10,7 +10,7 @@ export interface ResqueSetup {
 }
 export const resqueSetup = (): ResqueSetup => {
   const worker = new Worker(
-    { connection: connectionDetails, queues: ['math', 'otherQueue'] },
+    { connection: connectionDetails, queues: ['default'] },
     jobs
   );
   const scheduler = new Scheduler({ connection: connectionDetails });
@@ -35,6 +35,8 @@ export async function boot ({ scheduler, worker, queue }: ResqueBoot): Promise<v
 
   await scheduler.connect();
   scheduler.start().catch(err => console.log('Filed to start scheduler', err.message));
+
+  await queue.connect();
 
   handleWorkerEvents(worker);
   handleSchedulerEvents(scheduler);

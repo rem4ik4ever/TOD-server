@@ -1,22 +1,23 @@
-import { createTerminus } from '@godaddy/terminus';
 import { initialize } from './server';
+import { boot as bootResque, shutdown } from './workers'
+import { createTerminus } from '@godaddy/terminus'
 
-const port: string = (process.env.SERVER_PORT != null) ? process.env.SERVER_PORT : '8080';
+const port: string = (process.env.RESQUE_SERVER_PORT != null) ? process.env.RESQUE_SERVER_PORT : '8081';
 
 async function boot (): Promise<any> {
   const { app, resque } = await initialize();
   const server = app.listen(port, () => {
-    console.log(`GraphQL server running http://localhost:${port}/graphql`);
+    console.log('**Node Resque server is running**');
   });
-  await resque.queue.connect();
+  bootResque(resque).catch(err => console.log('Resque failed to boot', err.message))
 
   const onHealthCheck = async (): Promise<void> => {
     console.log('health')
   }
 
   const onSignal = async (): Promise<void> => {
-    console.log('CLEANING UP SERVER')
-    await resque.queue.end()
+    console.log('NEED TO CLEANUP')
+    await shutdown(resque)
   }
 
   createTerminus(server, {

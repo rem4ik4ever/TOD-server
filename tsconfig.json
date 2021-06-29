@@ -8,11 +8,11 @@
     "moduleResolution": "node",
     "sourceMap": true,
     "outDir": "dist",
-    "rootDir": "./",
-    "baseUrl": "./",
+    "rootDir": ".",
+    "baseUrl": ".",
     "paths": {
-      "*": ["*"]
+      "*/": ["./*"],
     }
   },
-  "include": ["src/**/*", "prisma/**/*"]
+  "include": ["./src/**/*.ts", "./prisma/**/*"]
 }
