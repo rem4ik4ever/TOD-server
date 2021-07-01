@@ -3,6 +3,7 @@ import { DateTimeResolver } from 'graphql-scalars'
 
 export * from './DataTable'
 export * from './Entry'
+export * from './Column'
 export * from './User'
 export * from './Authentication'
 export * from './mutations'

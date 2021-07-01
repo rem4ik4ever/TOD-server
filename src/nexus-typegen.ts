@@ -52,6 +52,14 @@ export interface NexusGenInputs {
     password: string; // String!
     username: string; // String!
   }
+  UpdateColumnInput: { // input type
+    align?: string | null; // String
+    field?: string | null; // String
+    header?: string | null; // String
+    hidden?: boolean | null; // Boolean
+    minWidth?: number | null; // Int
+    width?: string | null; // String
+  }
 }
 
 export interface NexusGenEnums {
@@ -70,6 +78,16 @@ export interface NexusGenObjects {
   AuthType: { // root type
     token?: string | null; // String
     user?: NexusGenRootTypes['User'] | null; // User
+  }
+  Column: { // root type
+    align: string; // String!
+    field: string; // String!
+    header: string; // String!
+    hidden: boolean; // Boolean!
+    id: string; // ID!
+    minWidth?: number | null; // Int
+    tableId: number; // Int!
+    width: string; // String!
   }
   DataTable: { // root type
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
@@ -135,6 +153,17 @@ export interface NexusGenFieldTypes {
     token: string | null; // String
     user: NexusGenRootTypes['User'] | null; // User
   }
+  Column: { // field return type
+    align: string; // String!
+    field: string; // String!
+    header: string; // String!
+    hidden: boolean; // Boolean!
+    id: string; // ID!
+    minWidth: number | null; // Int
+    table: NexusGenRootTypes['DataTable'] | null; // DataTable
+    tableId: number; // Int!
+    width: string; // String!
+  }
   DataTable: { // field return type
     createdAt: NexusGenScalars['DateTime'] | null; // DateTime
     entries: NexusGenRootTypes['EntryConnection'] | null; // EntryConnection
@@ -173,6 +202,7 @@ export interface NexusGenFieldTypes {
     login: NexusGenRootTypes['AuthType'] | null; // AuthType
     ping: string; // String!
     register: NexusGenRootTypes['User'] | null; // User
+    updateColumn: NexusGenRootTypes['Column'] | null; // Column
   }
   PageInfo: { // field return type
     endCursor: string | null; // String
@@ -185,6 +215,7 @@ export interface NexusGenFieldTypes {
     dataTables: NexusGenRootTypes['DataTableConnection'] | null; // DataTableConnection
     drafts: Array<NexusGenRootTypes['DataTable'] | null>; // [DataTable]!
     entry: NexusGenRootTypes['Entry'] | null; // Entry
+    getTableColumns: Array<NexusGenRootTypes['Column'] | null> | null; // [Column]
     ok: boolean; // Boolean!
   }
   User: { // field return type
@@ -202,6 +233,17 @@ export interface NexusGenFieldTypeNames {
   AuthType: { // field return type name
     token: 'String'
     user: 'User'
+  }
+  Column: { // field return type name
+    align: 'String'
+    field: 'String'
+    header: 'String'
+    hidden: 'Boolean'
+    id: 'ID'
+    minWidth: 'Int'
+    table: 'DataTable'
+    tableId: 'Int'
+    width: 'String'
   }
   DataTable: { // field return type name
     createdAt: 'DateTime'
@@ -241,6 +283,7 @@ export interface NexusGenFieldTypeNames {
     login: 'AuthType'
     ping: 'String'
     register: 'User'
+    updateColumn: 'Column'
   }
   PageInfo: { // field return type name
     endCursor: 'String'
@@ -253,6 +296,7 @@ export interface NexusGenFieldTypeNames {
     dataTables: 'DataTableConnection'
     drafts: 'DataTable'
     entry: 'Entry'
+    getTableColumns: 'Column'
     ok: 'Boolean'
   }
   User: { // field return type name
@@ -291,6 +335,10 @@ export interface NexusGenArgTypes {
     register: { // args
       input: NexusGenInputs['RegisterUserInput']; // RegisterUserInput!
     }
+    updateColumn: { // args
+      id: string; // String!
+      input: NexusGenInputs['UpdateColumnInput']; // UpdateColumnInput!
+    }
   }
   Query: {
     dataTable: { // args
@@ -304,6 +352,9 @@ export interface NexusGenArgTypes {
     }
     entry: { // args
       id: string; // String!
+    }
+    getTableColumns: { // args
+      tableId: number; // Int!
     }
   }
 }

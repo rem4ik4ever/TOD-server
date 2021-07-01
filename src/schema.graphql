@@ -7,6 +7,18 @@ type AuthType {
   user: User
 }
 
+type Column {
+  align: String!
+  field: String!
+  header: String!
+  hidden: Boolean!
+  id: ID!
+  minWidth: Int
+  table: DataTable
+  tableId: Int!
+  width: String!
+}
+
 type DataTable {
   createdAt: DateTime
   entries(
@@ -99,6 +111,7 @@ type Mutation {
   login(input: LoginUserInput!): AuthType
   ping(text: String!): String!
   register(input: RegisterUserInput!): User
+  updateColumn(id: String!, input: UpdateColumnInput!): Column
 }
 
 """
@@ -143,6 +156,7 @@ type Query {
   ): DataTableConnection
   drafts: [DataTable]!
   entry(id: String!): Entry
+  getTableColumns(tableId: Int!): [Column]
   ok: Boolean!
 }
 
@@ -150,6 +164,15 @@ input RegisterUserInput {
   email: String!
   password: String!
   username: String!
+}
+
+input UpdateColumnInput {
+  align: String
+  field: String
+  header: String
+  hidden: Boolean
+  minWidth: Int
+  width: String
 }
 
 type User {
