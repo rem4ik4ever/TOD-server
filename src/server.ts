@@ -11,6 +11,7 @@ import { schema } from './api/schema';
 import { createContext } from './api/context';
 import { setupNodemailer } from './config/nodemailerConfig';
 import { ResqueSetup, resqueSetup } from './workers';
+import expressPlayground from 'graphql-playground-middleware-express'
 
 // initialize configuration
 dotenv.config();
@@ -32,11 +33,13 @@ export const initialize = async (): Promise<{app: Express, resque: ResqueSetup}>
   });
 
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  app.use('/graphql', graphqlHTTP((request) => ({
+  app.use('/graphql', graphqlHTTP((request: Request) => ({
     schema,
     context: createContext(request, mailTransporter, resque),
-    graphiql: true
+    graphiql: false
   })))
+
+  app.get('/playground', expressPlayground({ endpoint: '/graphql' }))
 
   return { app, resque };
 }

@@ -15,9 +15,11 @@ model DataTable {
   name    String
   status  String  @default("DRAFT")
   fileKey String?
+  ownerId String?
 
   columns   Column[]
   entries   Entry[]
+  owner     User?     @relation(fields: [ownerId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -31,6 +33,7 @@ model User {
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
   emailConfirmation EmailConfirmation?
+  tables            DataTable[]
 }
 
 model EmailConfirmation {

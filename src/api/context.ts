@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client'
+import { Request } from 'express'
 import nodemailer from 'nodemailer'
 import SMTPTransport from 'nodemailer/lib/smtp-transport'
 import { ResqueSetup } from '../workers'
@@ -8,13 +9,13 @@ export type MailTranporter = nodemailer.Transporter<SMTPTransport.SentMessageInf
 
 export interface Context {
   prisma: PrismaClient
-  req: any
+  req: Request
   transporter: MailTranporter
   resque: ResqueSetup
 }
-export const createContext = (req: any, transporter: nodemailer.Transporter<SMTPTransport.SentMessageInfo>, resque: ResqueSetup): Context => {
+export const createContext = (req: Request, transporter: nodemailer.Transporter<SMTPTransport.SentMessageInfo>, resque: ResqueSetup): Context => {
   return {
-    ...req,
+    req,
     prisma,
     transporter,
     resque

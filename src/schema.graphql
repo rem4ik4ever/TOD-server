@@ -37,6 +37,8 @@ type DataTable {
   fileKey: String
   id: Int!
   name: String
+  owner: User
+  ownerId: String
   status: String
   updatedAt: DateTime
 }
@@ -62,9 +64,7 @@ type DataTableEdge {
 }
 
 input DataTableInput {
-  fileKey: String!
   name: String!
-  status: String!
 }
 
 """

@@ -10,12 +10,8 @@ export interface AuthenticateUser {
   compare: (text: string, hash: string) => PromiseLike<boolean>
 }
 export const authenticateUser = async ({ userResource, data, compare }: AuthenticateUser): Promise<User> => {
-  const { result: user, error } = await userResource.findByEmail(data.email);
-  if (error != null) {
-    // throw new Error(error.message)
-    // @TODO notify bugsnag
-  }
-  if (user == null || (error != null)) {
+  const user = await userResource.findByEmail(data.email);
+  if (user == null) {
     throw new Error('invalid_credentials')
   }
   const valid = await compare(data.password, user.password)

@@ -14,7 +14,7 @@ export interface RegisterUser {
 const salt = (process.env.HASH_SALT != null) ? process.env.HASH_SALT : 10
 
 export const registerUser = async ({ userResource, data }: RegisterUser): Promise<User> => {
-  const { result: userExists } = await userResource.findByEmail(data.email)
+  const userExists = await userResource.findByEmail(data.email)
   if (userExists != null) {
     throw new Error('user_exists')
   }
@@ -23,10 +23,7 @@ export const registerUser = async ({ userResource, data }: RegisterUser): Promis
     ...data,
     password: hashedPassword
   }
-  const { result: user, error } = await userResource.createUser(payload);
-  if (error != null) {
-    throw new Error(error.message)
-  }
+  const user = await userResource.createUser(payload);
   if (user == null) {
     throw new Error('system_error')
   }

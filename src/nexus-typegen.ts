@@ -39,9 +39,7 @@ declare global {
 
 export interface NexusGenInputs {
   DataTableInput: { // input type
-    fileKey: string; // String!
     name: string; // String!
-    status: string; // String!
   }
   LoginUserInput: { // input type
     email: string; // String!
@@ -94,6 +92,7 @@ export interface NexusGenObjects {
     fileKey?: string | null; // String
     id: number; // Int!
     name?: string | null; // String
+    ownerId?: string | null; // String
     status?: string | null; // String
     updatedAt?: NexusGenScalars['DateTime'] | null; // DateTime
   }
@@ -170,6 +169,8 @@ export interface NexusGenFieldTypes {
     fileKey: string | null; // String
     id: number; // Int!
     name: string | null; // String
+    owner: NexusGenRootTypes['User'] | null; // User
+    ownerId: string | null; // String
     status: string | null; // String
     updatedAt: NexusGenScalars['DateTime'] | null; // DateTime
   }
@@ -251,6 +252,8 @@ export interface NexusGenFieldTypeNames {
     fileKey: 'String'
     id: 'Int'
     name: 'String'
+    owner: 'User'
+    ownerId: 'String'
     status: 'String'
     updatedAt: 'DateTime'
   }

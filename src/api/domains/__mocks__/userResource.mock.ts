@@ -29,11 +29,11 @@ export const userResourceMock = jest.fn(() => {
       return await new Promise((resolve) => {
         const found = users.filter((u: any) => email === u.email).pop();
         if (typeof found !== 'undefined') {
-          resolve({ result: found });
+          resolve(found);
         } else {
-          resolve({
-            error: new Error('system_error')
-          })
+          resolve(
+            null
+          )
         }
       })
     },
@@ -49,7 +49,7 @@ export const userResourceMock = jest.fn(() => {
           password: 'hashyhash'
         }
         users.push(newUser);
-        resolve({ result: newUser })
+        resolve(newUser)
       })
     }
   }
