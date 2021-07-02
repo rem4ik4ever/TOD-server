@@ -23,8 +23,23 @@ export const columnResourceMock = jest.fn((): ColumnResource => {
       resolve(column)
     })
   }
+  const update = async (id: string, data: any): Promise<Column|null> => {
+    return await new Promise(resolve => {
+      const col = columns.filter(c => c.id === id).pop();
+      if (col == null) resolve(null)
+      else {
+        const idx = columns.findIndex((c) => c.id === id)
+        columns[idx] = {
+          ...columns[idx],
+          ...col
+        }
+        resolve(columns[idx])
+      }
+    })
+  }
   return {
     findById,
-    create
+    create,
+    update
   }
 })

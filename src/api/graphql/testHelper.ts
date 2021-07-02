@@ -1,7 +1,7 @@
 // tests/__helpers.ts                                            // 1
 import getPort, { makeRange } from 'get-port';
 import { GraphQLClient } from 'graphql-request';
-import { initialize } from '../../../server';
+import { initialize } from '../../server';
 
 interface TestContext {
   client: GraphQLClient | null

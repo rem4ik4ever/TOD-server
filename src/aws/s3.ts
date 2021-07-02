@@ -1,4 +1,4 @@
-import { GetObjectCommand, GetObjectCommandInput, S3Client } from '@aws-sdk/client-s3'
+import { GetObjectCommand, GetObjectCommandInput, PutObjectCommand, PutObjectCommandInput, PutObjectCommandOutput, S3Client } from '@aws-sdk/client-s3'
 import { isDefined } from '../utils';
 const REGION = isDefined(process.env.AWS_S3_REGION) === true ? process.env.AWS_S3_REGION : 'us-east-1';
 export const s3Client = new S3Client({ region: REGION })
@@ -15,6 +15,11 @@ export const streamToString = async (stream: any): Promise<string> =>
     stream.on('error', reject);
     stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
   });
+
+export const uploadObject = async (params: PutObjectCommandInput): Promise<PutObjectCommandOutput> => {
+  const command = new PutObjectCommand(params)
+  return await s3Client.send(command)
+}
 
 // async function test (): Promise<void> {
 //  const file = await getObject({

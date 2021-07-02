@@ -3,7 +3,7 @@ import { Column, Prisma, PrismaClient } from '@prisma/client';
 export interface ColumnResource {
   findById: (id: string) => Promise<Column|null>
   create: (data: Prisma.ColumnCreateInput) => Promise<Column|null>
-  update: (id: string, data: Prisma.ColumnUpdateInput) => Promise<Column|null>
+  update: (id: string, data: any) => Promise<Column|null>
 }
 
 export const columnResource = ({ client }: {client: PrismaClient}): ColumnResource => {
