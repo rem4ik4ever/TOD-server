@@ -25,6 +25,7 @@ export const permissions = shield({
     getTableColumns: rules.isAuthenticated
   },
   Mutation: {
-    createDataTable: rules.isAuthenticated
+    createDataTable: rules.isAuthenticated,
+    updateColumn: rules.isAuthenticated
   }
 })
