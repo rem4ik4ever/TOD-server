@@ -12,6 +12,7 @@ import { createContext } from './api/context';
 import { setupNodemailer } from './config/nodemailerConfig';
 import { ResqueSetup, resqueSetup } from './workers';
 import expressPlayground from 'graphql-playground-middleware-express'
+import cors from 'cors'
 
 // initialize configuration
 dotenv.config();
@@ -22,6 +23,7 @@ export const initialize = async (): Promise<{app: Express, resque: ResqueSetup}>
   const resque = resqueSetup();
 
   app.use(opsBasePath, opsMiddleware);
+  app.use(cors())
 
   if (serveStaticFiles()) {
     app.use(getVirtualRoot(), express.static(getStaticPath()));
