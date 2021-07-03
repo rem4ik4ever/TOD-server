@@ -7,11 +7,15 @@ export interface ConfirmUserEmail {
   emailConfirmationResource: EmailConfirmationResource
   token: string
 }
+
+export enum ConfirmUserEmailErrors {
+  AlreadyConfirmed='already_confirmed'
+}
 // @todo missing test
 export const confirmUserEmail = async ({ userResource, emailConfirmationResource, token }: ConfirmUserEmail): Promise<User> => {
   const emailConfirmation = await emailConfirmationResource.findEmailConfirmationById(token)
   if (emailConfirmation == null) throw new Error('not_found')
-  if (emailConfirmation.confirmed) throw new Error('already_confirmed');
+  if (emailConfirmation.confirmed) throw new Error(ConfirmUserEmailErrors.AlreadyConfirmed);
 
   const user = await userResource.findById(emailConfirmation.userId)
   if (user == null) throw new Error('user_not_found')

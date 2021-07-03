@@ -13,10 +13,15 @@ export interface RegisterUser {
 
 const salt = (process.env.HASH_SALT != null) ? process.env.HASH_SALT : 10
 
+export enum RegisterErrors {
+  UserExists = 'user_exists'
+}
+
 export const registerUser = async ({ userResource, data }: RegisterUser): Promise<User> => {
   const userExists = await userResource.findByEmail(data.email)
   if (userExists != null) {
-    throw new Error('user_exists')
+    console.log('EXISTS')
+    throw new Error(RegisterErrors.UserExists)
   }
   const hashedPassword = await hash(data.password, salt);
   const payload = {

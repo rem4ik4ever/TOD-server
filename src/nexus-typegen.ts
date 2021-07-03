@@ -131,7 +131,6 @@ export interface NexusGenObjects {
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     email: string; // String!
     id?: string | null; // String
-    password: string; // String!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
     username: string; // String!
   }
@@ -224,7 +223,6 @@ export interface NexusGenFieldTypes {
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     email: string; // String!
     id: string | null; // String
-    password: string; // String!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
     username: string; // String!
   }
@@ -307,7 +305,6 @@ export interface NexusGenFieldTypeNames {
     createdAt: 'DateTime'
     email: 'String'
     id: 'String'
-    password: 'String'
     updatedAt: 'DateTime'
     username: 'String'
   }

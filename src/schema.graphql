@@ -180,7 +180,6 @@ type User {
   createdAt: DateTime!
   email: String!
   id: String
-  password: String!
   updatedAt: DateTime!
   username: String!
 }
