@@ -22,7 +22,8 @@ export const permissions = shield({
   Query: {
     dataTable: and(rules.isAuthenticated, rules.isTableOwner),
     dataTables: rules.isAuthenticated,
-    getTableColumns: rules.isAuthenticated
+    getTableColumns: rules.isAuthenticated,
+    me: rules.isAuthenticated
   },
   Mutation: {
     createDataTable: rules.isAuthenticated,

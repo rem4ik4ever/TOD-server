@@ -157,6 +157,7 @@ type Query {
   drafts: [DataTable]!
   entry(id: String!): Entry
   getTableColumns(tableId: Int!): [Column]
+  me: User
   ok: Boolean!
 }
 

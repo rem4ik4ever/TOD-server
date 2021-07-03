@@ -216,6 +216,7 @@ export interface NexusGenFieldTypes {
     drafts: Array<NexusGenRootTypes['DataTable'] | null>; // [DataTable]!
     entry: NexusGenRootTypes['Entry'] | null; // Entry
     getTableColumns: Array<NexusGenRootTypes['Column'] | null> | null; // [Column]
+    me: NexusGenRootTypes['User'] | null; // User
     ok: boolean; // Boolean!
   }
   User: { // field return type
@@ -298,6 +299,7 @@ export interface NexusGenFieldTypeNames {
     drafts: 'DataTable'
     entry: 'Entry'
     getTableColumns: 'Column'
+    me: 'User'
     ok: 'Boolean'
   }
   User: { // field return type name

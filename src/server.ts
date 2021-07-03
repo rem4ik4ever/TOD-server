@@ -35,7 +35,11 @@ export const initialize = async (): Promise<{app: Express, resque: ResqueSetup}>
   });
 
   app.use(opsBasePath, opsMiddleware);
-  app.use(cors())
+  app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+    optionsSuccessStatus: 200
+  }))
 
   if (serveStaticFiles()) {
     app.use(getVirtualRoot(), express.static(getStaticPath()));
