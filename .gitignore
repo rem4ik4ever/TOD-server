@@ -3,3 +3,4 @@ dist
 dump.rdb
 coverage
 redis-data
+.env

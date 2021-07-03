@@ -200,7 +200,7 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     confirmEmail: NexusGenRootTypes['User'] | null; // User
     createDataTable: NexusGenRootTypes['DataTable'] | null; // DataTable
-    login: NexusGenRootTypes['AuthType'] | null; // AuthType
+    login: NexusGenRootTypes['User'] | null; // User
     ping: string; // String!
     register: NexusGenRootTypes['User'] | null; // User
     updateColumn: NexusGenRootTypes['Column'] | null; // Column
@@ -283,7 +283,7 @@ export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     confirmEmail: 'User'
     createDataTable: 'DataTable'
-    login: 'AuthType'
+    login: 'User'
     ping: 'String'
     register: 'User'
     updateColumn: 'Column'

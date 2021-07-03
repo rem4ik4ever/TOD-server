@@ -108,7 +108,7 @@ input LoginUserInput {
 type Mutation {
   confirmEmail(token: String!): User
   createDataTable(input: DataTableInput!): DataTable
-  login(input: LoginUserInput!): AuthType
+  login(input: LoginUserInput!): User
   ping(text: String!): String!
   register(input: RegisterUserInput!): User
   updateColumn(id: String!, input: UpdateColumnInput!): Column

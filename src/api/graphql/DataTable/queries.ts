@@ -11,6 +11,7 @@ export const DraftTablesQueries = extendType({
       type: 'DataTable',
       resolve: async (_, __, ctx: Context) => {
         const ownerId = getUserId(ctx);
+        console.log({ ownerId })
         return await ctx.prisma.dataTable.findMany({ where: { status: 'DRAFT', ownerId } })
       }
     })

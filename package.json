@@ -41,6 +41,7 @@
     "ioredis": "^4.27.6",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
+    "next-iron-session": "^4.2.0",
     "nexus": "^1.0.0",
     "node-resque": "^9.0.2",
     "nodemailer": "^6.6.2",

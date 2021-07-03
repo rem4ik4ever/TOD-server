@@ -5,7 +5,6 @@ import { confirmUserEmail } from '../../domains/authentication/confirmUserEmail'
 import { userResource } from '../../resources';
 import { emailConfirmationResource } from '../../resources/emailConfirmationResource';
 import { compare } from 'bcryptjs';
-import { sign } from 'jsonwebtoken';
 
 export const RegisterInput = inputObjectType({
   name: 'RegisterUserInput',
@@ -70,7 +69,7 @@ export const ConfirmEmail = mutationField(t => {
 
 export const Login = mutationField(t => {
   t.field('login', {
-    type: 'AuthType',
+    type: 'User',
     args: {
       input: nonNull(arg({ type: 'LoginUserInput' }))
     },
@@ -80,11 +79,13 @@ export const Login = mutationField(t => {
       if (APP_SECRET == null) {
         throw new Error('missing_app_secret')
       }
-      const jwt = sign({ userId: user.id }, APP_SECRET, { expiresIn: '7 days' })
-      return {
-        user,
-        token: jwt
-      };
+      try {
+        ctx.req.session.set('user', { id: user.id })
+        await ctx.req.session.save()
+      } catch (err) {
+        console.error(err)
+      }
+      return user
     }
   })
 })
