@@ -1,4 +1,5 @@
 import { intArg, list, nonNull, queryField } from 'nexus';
+import { getUserId } from '../utils';
 
 export const getTableColumns = queryField('getTableColumns', {
   type: list('Column'),
@@ -7,7 +8,8 @@ export const getTableColumns = queryField('getTableColumns', {
   },
   resolve: async (_, args, ctx) => {
     try {
-      const result = await ctx.prisma.column.findMany({ where: { tableId: args.tableId } })
+      const ownerId = getUserId(ctx)
+      const result = await ctx.prisma.column.findMany({ where: { table: { id: args.tableId, ownerId } } })
       console.log({ result })
       return result
     } catch (error) {

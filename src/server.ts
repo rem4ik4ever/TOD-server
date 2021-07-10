@@ -1,4 +1,4 @@
-import express, { Request, Response, Express } from 'express';
+import express, { Response, Express, Request } from 'express';
 import * as dotenv from 'dotenv';
 import { opsBasePath, opsMiddleware } from './middlewares/ops';
 import {
@@ -11,6 +11,9 @@ import { schema } from './api/schema';
 import { createContext } from './api/context';
 import { setupNodemailer } from './config/nodemailerConfig';
 import { ResqueSetup, resqueSetup } from './workers';
+import expressPlayground from 'graphql-playground-middleware-express'
+import cors from 'cors'
+import { ironSession, Session } from 'next-iron-session';
 
 // initialize configuration
 dotenv.config();
@@ -19,8 +22,21 @@ export const initialize = async (): Promise<{app: Express, resque: ResqueSetup}>
   const app = express();
   const mailTransporter = await setupNodemailer()
   const resque = resqueSetup();
+  const session = ironSession({
+    cookieName: 'tod-session',
+    password: String(process.env.IRON_SESSION_PASS),
+    cookieOptions: {
+    // the next line allows to use the session in non-https environements
+      secure: process.env.NODE_ENV === 'production'
+    }
+  });
 
   app.use(opsBasePath, opsMiddleware);
+  app.use(cors({
+    origin: process.env.APP_HOST_URL,
+    credentials: true,
+    optionsSuccessStatus: 200
+  }))
 
   if (serveStaticFiles()) {
     app.use(getVirtualRoot(), express.static(getStaticPath()));
@@ -32,11 +48,15 @@ export const initialize = async (): Promise<{app: Express, resque: ResqueSetup}>
   });
 
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  app.use('/graphql', graphqlHTTP((request) => ({
+  app.use('/graphql', session, graphqlHTTP((request: Request & {session: Session}) => ({
     schema,
     context: createContext(request, mailTransporter, resque),
-    graphiql: true
+    graphiql: false
   })))
+
+  app.get('/playground', expressPlayground({
+    endpoint: '/graphql'
+  }))
 
   return { app, resque };
 }

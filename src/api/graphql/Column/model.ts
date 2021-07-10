@@ -15,12 +15,9 @@ export const ColumnType = objectType({
     t.field('table', {
       type: 'DataTable',
       resolve: async (root, _, ctx) => {
-        try {
-          const result = await tableResource({ client: ctx.prisma }).findById(root.tableId)
-          return result;
-        } catch (error) {
-          return null;
-        }
+        const result = await tableResource({ client: ctx.prisma }).findById(root.tableId)
+        if (result == null) throw new Error('not_found')
+        return result;
       }
     })
   }

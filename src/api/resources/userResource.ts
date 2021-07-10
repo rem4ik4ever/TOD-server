@@ -1,12 +1,6 @@
 import { Prisma, PrismaClient, User } from '.prisma/client';
 
-interface ActionError {
-  message: string
-}
-
-export interface FailResponse {result?: null|undefined, error: ActionError}
-export interface SuccessResponse {result: User, error?: undefined|null}
-export type UserResourceResponse = Promise<SuccessResponse|FailResponse>
+export type UserResourceResponse = Promise<User|null>
 
 export interface UserResource {
   createUser: (data: Prisma.UserCreateInput) => UserResourceResponse
@@ -18,52 +12,25 @@ export interface UserResource {
 
 export function userResource ({ client }: {client: PrismaClient}): UserResource {
   const createUser = async (data: Prisma.UserCreateInput): UserResourceResponse => {
-    try {
-      const result = await client.user.create({ data })
-      console.log({ result })
-      return { result, error: null }
-    } catch (error) {
-      return { error }
-    }
+    const user = await client.user.create({ data })
+    return user;
   }
   const updateUser = async (id: string, data: Prisma.UserUpdateInput): UserResourceResponse => {
-    try {
-      const result = await client.user.update({ where: { id }, data })
-      return { result }
-    } catch (error) {
-      return { error }
-    }
+    const user = await client.user.update({ where: { id }, data })
+    return user;
   }
   const findById = async (id: string): UserResourceResponse => {
-    try {
-      const result = await client.user.findUnique({ where: { id } })
-      if (result != null) {
-        return { result }
-      }
-      throw new Error('not_found')
-    } catch (error) {
-      return { error }
-    }
+    const user = await client.user.findUnique({ where: { id } })
+    return user;
   }
   const findByEmail = async (email: string): UserResourceResponse => {
-    try {
-      const result = await client.user.findUnique({ where: { email } })
-      if (result != null) {
-        return { result }
-      }
-      throw new Error('not_found')
-    } catch (error) {
-      return { error }
-    }
+    const user = await client.user.findUnique({ where: { email } })
+    return user
   }
 
   const deleteUser = async (id: string): UserResourceResponse => {
-    try {
-      const result = await client.user.delete({ where: { id } })
-      return { result }
-    } catch (error) {
-      return { error }
-    }
+    const user = await client.user.delete({ where: { id } })
+    return user;
   }
   return {
     createUser,

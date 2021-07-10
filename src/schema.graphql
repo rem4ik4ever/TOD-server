@@ -37,6 +37,8 @@ type DataTable {
   fileKey: String
   id: Int!
   name: String
+  owner: User
+  ownerId: String
   status: String
   updatedAt: DateTime
 }
@@ -46,6 +48,9 @@ type DataTableConnection {
   https://facebook.github.io/relay/graphql/connections.htm#sec-Edge-Types
   """
   edges: [DataTableEdge]
+
+  """Flattened list of DataTable type"""
+  nodes: [DataTable]
 
   """
   https://facebook.github.io/relay/graphql/connections.htm#sec-undefined.PageInfo
@@ -62,9 +67,7 @@ type DataTableEdge {
 }
 
 input DataTableInput {
-  fileKey: String!
   name: String!
-  status: String!
 }
 
 """
@@ -85,6 +88,9 @@ type EntryConnection {
   https://facebook.github.io/relay/graphql/connections.htm#sec-Edge-Types
   """
   edges: [EntryEdge]
+
+  """Flattened list of Entry type"""
+  nodes: [Entry]
 
   """
   https://facebook.github.io/relay/graphql/connections.htm#sec-undefined.PageInfo
@@ -108,7 +114,7 @@ input LoginUserInput {
 type Mutation {
   confirmEmail(token: String!): User
   createDataTable(input: DataTableInput!): DataTable
-  login(input: LoginUserInput!): AuthType
+  login(input: LoginUserInput!): User
   ping(text: String!): String!
   register(input: RegisterUserInput!): User
   updateColumn(id: String!, input: UpdateColumnInput!): Column
@@ -157,6 +163,7 @@ type Query {
   drafts: [DataTable]!
   entry(id: String!): Entry
   getTableColumns(tableId: Int!): [Column]
+  me: User
   ok: Boolean!
 }
 
@@ -180,7 +187,6 @@ type User {
   createdAt: DateTime!
   email: String!
   id: String
-  password: String!
   updatedAt: DateTime!
   username: String!
 }

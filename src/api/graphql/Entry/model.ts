@@ -6,11 +6,15 @@ export const EntryType = objectType({
   definition (t) {
     t.id('id')
     t.int('tableId')
-    t.field('table', {
+    t.nullable.field('table', {
       type: 'DataTable',
       async resolve (root, __, ctx) {
         if (root.tableId == null) return null
-        return await tableResource({ client: ctx.prisma }).findById(root.tableId)
+        const table = await tableResource({ client: ctx.prisma }).findById(root.tableId)
+        if (table == null) {
+          throw new Error('not_found')
+        }
+        return table;
       }
     })
     t.field('createdAt', { type: 'DateTime' })

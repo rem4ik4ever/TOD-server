@@ -1,11 +1,10 @@
 import { arg, inputObjectType, mutationField, nonNull, stringArg } from 'nexus';
-import { registerUser } from '../../domains/authentication';
-import { authenticateUser } from '../../domains/authentication/authenticateUser';
-import { confirmUserEmail } from '../../domains/authentication/confirmUserEmail';
+import { RegisterErrors, registerUser } from '../../domains/authentication';
+import { authenticateUser, AuthErrors } from '../../domains/authentication/authenticateUser';
+import { confirmUserEmail, ConfirmUserEmailErrors } from '../../domains/authentication/confirmUserEmail';
 import { userResource } from '../../resources';
 import { emailConfirmationResource } from '../../resources/emailConfirmationResource';
 import { compare } from 'bcryptjs';
-import { sign } from 'jsonwebtoken';
 
 export const RegisterInput = inputObjectType({
   name: 'RegisterUserInput',
@@ -31,22 +30,25 @@ export const Register = mutationField(t => {
       input: nonNull(arg({ type: 'RegisterUserInput' }))
     },
     resolve: async (_, args, ctx) => {
-      const { username, email, password } = args.input;
-      const user = await registerUser({
-        userResource: userResource({ client: ctx.prisma }),
-        data: {
-          username,
-          email,
-          password
-        }
-      })
       try {
+        const { username, email, password } = args.input;
+        const user = await registerUser({
+          userResource: userResource({ client: ctx.prisma }),
+          data: {
+            username,
+            email,
+            password
+          }
+        })
         await ctx.resque.queue.enqueue('default', 'sendConfirmationEmail', [user.id])
+        return user;
       } catch (error) {
-        // @TODO notify bugsnag
-        console.log(error)
+        if (Object.values(RegisterErrors).includes(error.message)) {
+          return error;
+        } else {
+          throw error
+        }
       }
-      return user;
     }
   })
 })
@@ -58,33 +60,44 @@ export const ConfirmEmail = mutationField(t => {
       token: nonNull(stringArg())
     },
     resolve: async (_, args, ctx) => {
-      const user = await confirmUserEmail({
-        userResource: userResource({ client: ctx.prisma }),
-        emailConfirmationResource: emailConfirmationResource({ client: ctx.prisma }),
-        token: args.token
-      })
-      return user;
+      try {
+        const user = await confirmUserEmail({
+          userResource: userResource({ client: ctx.prisma }),
+          emailConfirmationResource: emailConfirmationResource({ client: ctx.prisma }),
+          token: args.token
+        })
+        return user;
+      } catch (error) {
+        if (Object.values(ConfirmUserEmailErrors).includes(error.message)) {
+          return error;
+        } else {
+          throw error;
+        }
+      }
     }
   })
 })
 
 export const Login = mutationField(t => {
   t.field('login', {
-    type: 'AuthType',
+    type: 'User',
     args: {
       input: nonNull(arg({ type: 'LoginUserInput' }))
     },
     resolve: async (_, args, ctx) => {
-      const user = await authenticateUser({ userResource: userResource({ client: ctx.prisma }), data: args.input, compare })
-      const { APP_SECRET } = process.env;
-      if (APP_SECRET == null) {
-        throw new Error('missing_app_secret')
+      try {
+        const user = await authenticateUser({ userResource: userResource({ client: ctx.prisma }), data: args.input, compare })
+
+        ctx.req.session.set('user', { id: user.id })
+        await ctx.req.session.save()
+        return user
+      } catch (error) {
+        if (Object.values(AuthErrors).includes(error.message)) {
+          return error
+        } else {
+          throw error;
+        }
       }
-      const jwt = sign({ userId: user.id }, APP_SECRET, { expiresIn: '7 days' })
-      return {
-        user,
-        token: jwt
-      };
     }
   })
 })

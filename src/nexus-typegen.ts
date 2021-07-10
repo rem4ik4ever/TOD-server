@@ -39,9 +39,7 @@ declare global {
 
 export interface NexusGenInputs {
   DataTableInput: { // input type
-    fileKey: string; // String!
     name: string; // String!
-    status: string; // String!
   }
   LoginUserInput: { // input type
     email: string; // String!
@@ -94,11 +92,13 @@ export interface NexusGenObjects {
     fileKey?: string | null; // String
     id: number; // Int!
     name?: string | null; // String
+    ownerId?: string | null; // String
     status?: string | null; // String
     updatedAt?: NexusGenScalars['DateTime'] | null; // DateTime
   }
   DataTableConnection: { // root type
     edges?: Array<NexusGenRootTypes['DataTableEdge'] | null> | null; // [DataTableEdge]
+    nodes?: Array<NexusGenRootTypes['DataTable'] | null> | null; // [DataTable]
     pageInfo: NexusGenRootTypes['PageInfo']; // PageInfo!
   }
   DataTableEdge: { // root type
@@ -113,6 +113,7 @@ export interface NexusGenObjects {
   }
   EntryConnection: { // root type
     edges?: Array<NexusGenRootTypes['EntryEdge'] | null> | null; // [EntryEdge]
+    nodes?: Array<NexusGenRootTypes['Entry'] | null> | null; // [Entry]
     pageInfo: NexusGenRootTypes['PageInfo']; // PageInfo!
   }
   EntryEdge: { // root type
@@ -132,7 +133,6 @@ export interface NexusGenObjects {
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     email: string; // String!
     id?: string | null; // String
-    password: string; // String!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
     username: string; // String!
   }
@@ -170,11 +170,14 @@ export interface NexusGenFieldTypes {
     fileKey: string | null; // String
     id: number; // Int!
     name: string | null; // String
+    owner: NexusGenRootTypes['User'] | null; // User
+    ownerId: string | null; // String
     status: string | null; // String
     updatedAt: NexusGenScalars['DateTime'] | null; // DateTime
   }
   DataTableConnection: { // field return type
     edges: Array<NexusGenRootTypes['DataTableEdge'] | null> | null; // [DataTableEdge]
+    nodes: Array<NexusGenRootTypes['DataTable'] | null> | null; // [DataTable]
     pageInfo: NexusGenRootTypes['PageInfo']; // PageInfo!
   }
   DataTableEdge: { // field return type
@@ -190,6 +193,7 @@ export interface NexusGenFieldTypes {
   }
   EntryConnection: { // field return type
     edges: Array<NexusGenRootTypes['EntryEdge'] | null> | null; // [EntryEdge]
+    nodes: Array<NexusGenRootTypes['Entry'] | null> | null; // [Entry]
     pageInfo: NexusGenRootTypes['PageInfo']; // PageInfo!
   }
   EntryEdge: { // field return type
@@ -199,7 +203,7 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     confirmEmail: NexusGenRootTypes['User'] | null; // User
     createDataTable: NexusGenRootTypes['DataTable'] | null; // DataTable
-    login: NexusGenRootTypes['AuthType'] | null; // AuthType
+    login: NexusGenRootTypes['User'] | null; // User
     ping: string; // String!
     register: NexusGenRootTypes['User'] | null; // User
     updateColumn: NexusGenRootTypes['Column'] | null; // Column
@@ -216,6 +220,7 @@ export interface NexusGenFieldTypes {
     drafts: Array<NexusGenRootTypes['DataTable'] | null>; // [DataTable]!
     entry: NexusGenRootTypes['Entry'] | null; // Entry
     getTableColumns: Array<NexusGenRootTypes['Column'] | null> | null; // [Column]
+    me: NexusGenRootTypes['User'] | null; // User
     ok: boolean; // Boolean!
   }
   User: { // field return type
@@ -223,7 +228,6 @@ export interface NexusGenFieldTypes {
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     email: string; // String!
     id: string | null; // String
-    password: string; // String!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
     username: string; // String!
   }
@@ -251,11 +255,14 @@ export interface NexusGenFieldTypeNames {
     fileKey: 'String'
     id: 'Int'
     name: 'String'
+    owner: 'User'
+    ownerId: 'String'
     status: 'String'
     updatedAt: 'DateTime'
   }
   DataTableConnection: { // field return type name
     edges: 'DataTableEdge'
+    nodes: 'DataTable'
     pageInfo: 'PageInfo'
   }
   DataTableEdge: { // field return type name
@@ -271,6 +278,7 @@ export interface NexusGenFieldTypeNames {
   }
   EntryConnection: { // field return type name
     edges: 'EntryEdge'
+    nodes: 'Entry'
     pageInfo: 'PageInfo'
   }
   EntryEdge: { // field return type name
@@ -280,7 +288,7 @@ export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     confirmEmail: 'User'
     createDataTable: 'DataTable'
-    login: 'AuthType'
+    login: 'User'
     ping: 'String'
     register: 'User'
     updateColumn: 'Column'
@@ -297,6 +305,7 @@ export interface NexusGenFieldTypeNames {
     drafts: 'DataTable'
     entry: 'Entry'
     getTableColumns: 'Column'
+    me: 'User'
     ok: 'Boolean'
   }
   User: { // field return type name
@@ -304,7 +313,6 @@ export interface NexusGenFieldTypeNames {
     createdAt: 'DateTime'
     email: 'String'
     id: 'String'
-    password: 'String'
     updatedAt: 'DateTime'
     username: 'String'
   }

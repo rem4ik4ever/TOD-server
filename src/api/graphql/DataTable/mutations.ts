@@ -1,11 +1,10 @@
 import { arg, inputObjectType, mutationField, nonNull } from 'nexus'
+import { getUserId } from '../utils'
 
 export const DataTableInputType = inputObjectType({
   name: 'DataTableInput',
   definition (t) {
     t.nonNull.string('name')
-    t.nonNull.string('status')
-    t.nonNull.string('fileKey')
   }
 })
 
@@ -15,9 +14,16 @@ export const CreateDataTable = mutationField(t => {
     args: {
       input: nonNull(arg({ type: 'DataTableInput' }))
     },
-    resolve (_, args, ctx) {
-      console.log(args)
-      return ctx.prisma.dataTable.create({ data: args.input });
+    async resolve (_, args, ctx) {
+      const userId = getUserId(ctx)
+      const table = await ctx.prisma.dataTable.create({
+        data: {
+          ...args.input,
+          ownerId: String(userId)
+        }
+      });
+      if (table == null) throw new Error('create_error')
+      return table
     }
   })
 })
