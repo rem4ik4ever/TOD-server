@@ -49,6 +49,9 @@ type DataTableConnection {
   """
   edges: [DataTableEdge]
 
+  """Flattened list of DataTable type"""
+  nodes: [DataTable]
+
   """
   https://facebook.github.io/relay/graphql/connections.htm#sec-undefined.PageInfo
   """
@@ -85,6 +88,9 @@ type EntryConnection {
   https://facebook.github.io/relay/graphql/connections.htm#sec-Edge-Types
   """
   edges: [EntryEdge]
+
+  """Flattened list of Entry type"""
+  nodes: [Entry]
 
   """
   https://facebook.github.io/relay/graphql/connections.htm#sec-undefined.PageInfo

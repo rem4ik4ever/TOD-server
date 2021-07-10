@@ -6,7 +6,13 @@ import { permissions } from './graphql/permissions';
 
 export const schemaWithoutPermissions = makeSchema({
   types,
-  plugins: [connectionPlugin()],
+  plugins: [connectionPlugin({
+    includeNodesField: true,
+    strictArgs: true,
+    cursorFromNode (node) {
+      return node.id
+    }
+  })],
   outputs: {
     typegen: join(__dirname, '..', 'nexus-typegen.ts'),
     schema: join(__dirname, '..', 'schema.graphql')
@@ -26,3 +32,4 @@ export const schemaWithoutPermissions = makeSchema({
 })
 
 export const schema = applyMiddleware(schemaWithoutPermissions, permissions)
+// export const schema = schemaWithoutPermissions

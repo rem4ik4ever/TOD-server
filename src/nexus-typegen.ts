@@ -98,6 +98,7 @@ export interface NexusGenObjects {
   }
   DataTableConnection: { // root type
     edges?: Array<NexusGenRootTypes['DataTableEdge'] | null> | null; // [DataTableEdge]
+    nodes?: Array<NexusGenRootTypes['DataTable'] | null> | null; // [DataTable]
     pageInfo: NexusGenRootTypes['PageInfo']; // PageInfo!
   }
   DataTableEdge: { // root type
@@ -112,6 +113,7 @@ export interface NexusGenObjects {
   }
   EntryConnection: { // root type
     edges?: Array<NexusGenRootTypes['EntryEdge'] | null> | null; // [EntryEdge]
+    nodes?: Array<NexusGenRootTypes['Entry'] | null> | null; // [Entry]
     pageInfo: NexusGenRootTypes['PageInfo']; // PageInfo!
   }
   EntryEdge: { // root type
@@ -175,6 +177,7 @@ export interface NexusGenFieldTypes {
   }
   DataTableConnection: { // field return type
     edges: Array<NexusGenRootTypes['DataTableEdge'] | null> | null; // [DataTableEdge]
+    nodes: Array<NexusGenRootTypes['DataTable'] | null> | null; // [DataTable]
     pageInfo: NexusGenRootTypes['PageInfo']; // PageInfo!
   }
   DataTableEdge: { // field return type
@@ -190,6 +193,7 @@ export interface NexusGenFieldTypes {
   }
   EntryConnection: { // field return type
     edges: Array<NexusGenRootTypes['EntryEdge'] | null> | null; // [EntryEdge]
+    nodes: Array<NexusGenRootTypes['Entry'] | null> | null; // [Entry]
     pageInfo: NexusGenRootTypes['PageInfo']; // PageInfo!
   }
   EntryEdge: { // field return type
@@ -258,6 +262,7 @@ export interface NexusGenFieldTypeNames {
   }
   DataTableConnection: { // field return type name
     edges: 'DataTableEdge'
+    nodes: 'DataTable'
     pageInfo: 'PageInfo'
   }
   DataTableEdge: { // field return type name
@@ -273,6 +278,7 @@ export interface NexusGenFieldTypeNames {
   }
   EntryConnection: { // field return type name
     edges: 'EntryEdge'
+    nodes: 'Entry'
     pageInfo: 'PageInfo'
   }
   EntryEdge: { // field return type name

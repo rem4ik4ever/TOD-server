@@ -22,9 +22,6 @@ export const initialize = async (): Promise<{app: Express, resque: ResqueSetup}>
   const app = express();
   const mailTransporter = await setupNodemailer()
   const resque = resqueSetup();
-  console.log({
-    pass: process.env.IRON_SESSION_PASS
-  })
   const session = ironSession({
     cookieName: 'tod-session',
     password: String(process.env.IRON_SESSION_PASS),
@@ -36,7 +33,7 @@ export const initialize = async (): Promise<{app: Express, resque: ResqueSetup}>
 
   app.use(opsBasePath, opsMiddleware);
   app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: process.env.APP_HOST_URL,
     credentials: true,
     optionsSuccessStatus: 200
   }))

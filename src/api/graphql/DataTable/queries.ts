@@ -1,4 +1,4 @@
-import { connectionFromArray } from 'graphql-relay'
+import { ConnectionArguments, connectionFromArray } from 'graphql-relay'
 import { extendType, intArg, nonNull } from 'nexus'
 import { Context } from '../../context'
 import { tableResource } from '../../resources'
@@ -26,9 +26,9 @@ export const DraftTablesQueries = extendType({
     })
     t.connectionField('dataTables', {
       type: 'DataTable',
-      async resolve (_, args: any, ctx, info) {
+      async resolve (_, args: ConnectionArguments, ctx, info) {
         const ownerId = getUserId(ctx);
-        const result = await ctx.prisma.dataTable.findMany({ take: 100, where: { ownerId } })
+        const result = await ctx.prisma.dataTable.findMany({ where: { ownerId } })
         return connectionFromArray(result, args)
       }
     })
