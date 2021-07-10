@@ -1,5 +1,5 @@
 import { ConnectionArguments, connectionFromArray } from 'graphql-relay'
-import { extendType, intArg, nonNull } from 'nexus'
+import { extendType, nonNull, stringArg } from 'nexus'
 import { Context } from '../../context'
 import { tableResource } from '../../resources'
 import { getUserId } from '../utils'
@@ -18,7 +18,7 @@ export const DraftTablesQueries = extendType({
     t.field('dataTable', {
       type: 'DataTable',
       args: {
-        id: nonNull(intArg())
+        id: nonNull(stringArg())
       },
       async resolve (_, args, ctx) {
         return await tableResource({ client: ctx.prisma }).findById(args.id)

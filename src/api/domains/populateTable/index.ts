@@ -7,7 +7,7 @@ interface PopulateTableParams {
   tableResource: TableResource
   columnResource: ColumnResource
   entryResource: EntryResource
-  tableId: number
+  tableId: string
 }
 
 export const populateTable = async ({ tableResource, columnResource, entryResource, tableId }: PopulateTableParams): Promise<DataTable> => {

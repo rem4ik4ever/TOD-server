@@ -5,7 +5,7 @@ export const EntryType = objectType({
   name: 'Entry',
   definition (t) {
     t.id('id')
-    t.int('tableId')
+    t.string('tableId')
     t.nullable.field('table', {
       type: 'DataTable',
       async resolve (root, __, ctx) {

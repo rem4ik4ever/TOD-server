@@ -41,6 +41,11 @@ export interface NexusGenInputs {
   DataTableInput: { // input type
     name: string; // String!
   }
+  DataTableUpdateInput: { // input type
+    fileKey?: string | null; // String
+    name?: string | null; // String
+    status?: string | null; // String
+  }
   LoginUserInput: { // input type
     email: string; // String!
     password: string; // String!
@@ -82,15 +87,15 @@ export interface NexusGenObjects {
     field: string; // String!
     header: string; // String!
     hidden: boolean; // Boolean!
-    id: string; // ID!
+    id: string; // String!
     minWidth?: number | null; // Int
-    tableId: number; // Int!
+    tableId: string; // String!
     width: string; // String!
   }
   DataTable: { // root type
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     fileKey?: string | null; // String
-    id: number; // Int!
+    id: string; // String!
     name?: string | null; // String
     ownerId?: string | null; // String
     status?: string | null; // String
@@ -108,7 +113,7 @@ export interface NexusGenObjects {
   Entry: { // root type
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     id?: string | null; // ID
-    tableId?: number | null; // Int
+    tableId?: string | null; // String
     updatedAt?: NexusGenScalars['DateTime'] | null; // DateTime
   }
   EntryConnection: { // root type
@@ -158,17 +163,18 @@ export interface NexusGenFieldTypes {
     field: string; // String!
     header: string; // String!
     hidden: boolean; // Boolean!
-    id: string; // ID!
+    id: string; // String!
     minWidth: number | null; // Int
     table: NexusGenRootTypes['DataTable'] | null; // DataTable
-    tableId: number; // Int!
+    tableId: string; // String!
     width: string; // String!
   }
   DataTable: { // field return type
+    columns: Array<NexusGenRootTypes['Column'] | null> | null; // [Column]
     createdAt: NexusGenScalars['DateTime'] | null; // DateTime
     entries: NexusGenRootTypes['EntryConnection'] | null; // EntryConnection
     fileKey: string | null; // String
-    id: number; // Int!
+    id: string; // String!
     name: string | null; // String
     owner: NexusGenRootTypes['User'] | null; // User
     ownerId: string | null; // String
@@ -188,7 +194,7 @@ export interface NexusGenFieldTypes {
     createdAt: NexusGenScalars['DateTime'] | null; // DateTime
     id: string | null; // ID
     table: NexusGenRootTypes['DataTable'] | null; // DataTable
-    tableId: number | null; // Int
+    tableId: string | null; // String
     updatedAt: NexusGenScalars['DateTime'] | null; // DateTime
   }
   EntryConnection: { // field return type
@@ -207,6 +213,7 @@ export interface NexusGenFieldTypes {
     ping: string; // String!
     register: NexusGenRootTypes['User'] | null; // User
     updateColumn: NexusGenRootTypes['Column'] | null; // Column
+    updateDataTable: NexusGenRootTypes['DataTable'] | null; // DataTable
   }
   PageInfo: { // field return type
     endCursor: string | null; // String
@@ -243,17 +250,18 @@ export interface NexusGenFieldTypeNames {
     field: 'String'
     header: 'String'
     hidden: 'Boolean'
-    id: 'ID'
+    id: 'String'
     minWidth: 'Int'
     table: 'DataTable'
-    tableId: 'Int'
+    tableId: 'String'
     width: 'String'
   }
   DataTable: { // field return type name
+    columns: 'Column'
     createdAt: 'DateTime'
     entries: 'EntryConnection'
     fileKey: 'String'
-    id: 'Int'
+    id: 'String'
     name: 'String'
     owner: 'User'
     ownerId: 'String'
@@ -273,7 +281,7 @@ export interface NexusGenFieldTypeNames {
     createdAt: 'DateTime'
     id: 'ID'
     table: 'DataTable'
-    tableId: 'Int'
+    tableId: 'String'
     updatedAt: 'DateTime'
   }
   EntryConnection: { // field return type name
@@ -292,6 +300,7 @@ export interface NexusGenFieldTypeNames {
     ping: 'String'
     register: 'User'
     updateColumn: 'Column'
+    updateDataTable: 'DataTable'
   }
   PageInfo: { // field return type name
     endCursor: 'String'
@@ -347,10 +356,14 @@ export interface NexusGenArgTypes {
       id: string; // String!
       input: NexusGenInputs['UpdateColumnInput']; // UpdateColumnInput!
     }
+    updateDataTable: { // args
+      id: string; // String!
+      input: NexusGenInputs['DataTableUpdateInput']; // DataTableUpdateInput!
+    }
   }
   Query: {
     dataTable: { // args
-      id: number; // Int!
+      id: string; // String!
     }
     dataTables: { // args
       after?: string | null; // String

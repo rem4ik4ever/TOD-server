@@ -12,14 +12,15 @@ type Column {
   field: String!
   header: String!
   hidden: Boolean!
-  id: ID!
+  id: String!
   minWidth: Int
   table: DataTable
-  tableId: Int!
+  tableId: String!
   width: String!
 }
 
 type DataTable {
+  columns: [Column]
   createdAt: DateTime
   entries(
     """Returns the elements in the list that come after the specified cursor"""
@@ -35,7 +36,7 @@ type DataTable {
     last: Int
   ): EntryConnection
   fileKey: String
-  id: Int!
+  id: String!
   name: String
   owner: User
   ownerId: String
@@ -70,6 +71,12 @@ input DataTableInput {
   name: String!
 }
 
+input DataTableUpdateInput {
+  fileKey: String
+  name: String
+  status: String
+}
+
 """
 A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
 """
@@ -79,7 +86,7 @@ type Entry {
   createdAt: DateTime
   id: ID
   table: DataTable
-  tableId: Int
+  tableId: String
   updatedAt: DateTime
 }
 
@@ -118,6 +125,7 @@ type Mutation {
   ping(text: String!): String!
   register(input: RegisterUserInput!): User
   updateColumn(id: String!, input: UpdateColumnInput!): Column
+  updateDataTable(id: String!, input: DataTableUpdateInput!): DataTable
 }
 
 """
@@ -146,7 +154,7 @@ type PageInfo {
 }
 
 type Query {
-  dataTable(id: Int!): DataTable
+  dataTable(id: String!): DataTable
   dataTables(
     """Returns the elements in the list that come after the specified cursor"""
     after: String

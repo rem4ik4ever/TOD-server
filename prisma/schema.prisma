@@ -11,7 +11,7 @@ generator client {
 }
 
 model DataTable {
-  id      Int     @id @default(autoincrement())
+  id      String     @id @default(uuid())
   name    String
   status  String  @default("DRAFT")
   fileKey String?
@@ -54,14 +54,14 @@ model Column {
   minWidth Int?
   align    String
   hidden   Boolean      @default(false)
-  tableId  Int
+  tableId  String
   table    DataTable    @relation(fields: [tableId], references: [id])
   values   FieldValue[]
 }
 
 model Entry {
   id      String       @id @default(uuid())
-  tableId Int
+  tableId String
   table   DataTable    @relation(fields: [tableId], references: [id])
   values  FieldValue[]
 }

@@ -1,11 +1,11 @@
 import { connectionFromArray } from 'graphql-relay'
-import { objectType } from 'nexus'
+import { list, objectType } from 'nexus'
 import { userResource } from '../../resources'
 
 export const DataTable = objectType({
   name: 'DataTable',
   definition (t) {
-    t.nonNull.int('id')
+    t.nonNull.string('id')
     t.string('name')
     t.string('status')
     t.nullable.string('fileKey')
@@ -20,11 +20,16 @@ export const DataTable = objectType({
         return user;
       }
     })
+    t.field('columns', {
+      type: list('Column'),
+      async resolve (root, args, ctx) {
+        return await ctx.column.allByTableId(root.id)
+      }
+    })
     t.connectionField('entries', {
       type: 'Entry',
       async resolve (root, args, ctx) {
         const result = await ctx.prisma.entry.findMany({
-          take: 100,
           where: {
             tableId: root.id
           }

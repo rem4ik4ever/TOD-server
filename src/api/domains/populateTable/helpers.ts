@@ -5,8 +5,8 @@ import { Column } from '.prisma/client';
 
 export const downloadCSV = async (fileKey: string): Promise<ReadableStream> => {
   const params = {
-    Bucket: 'todbucket195016-dev',
-    Key: 'public/86703b5c-6ec4-4610-8d19-4585801c854e_71917b5c-392f-4bfa-b088-74555dbb2c24'
+    Bucket: process.env.AWS_S3_BUCKET_NAME,
+    Key: `public/${fileKey}`
   }
   const stream = await getObject(params)
 
@@ -35,7 +35,7 @@ export const parseCSV = async (stream: any): Promise<string[][]> => {
   })
 }
 
-export const saveColumns = async (columnsResource: ColumnResource, row: string[], tableId: number): Promise<Column[]> => {
+export const saveColumns = async (columnsResource: ColumnResource, row: string[], tableId: string): Promise<Column[]> => {
   const columns: Column[] = [];
   // eslint-disable-next-line @typescript-eslint/no-for-in-array
   for (const index in row) {
