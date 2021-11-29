@@ -21,6 +21,7 @@ type Column {
 
 input CreateEmailTemplateInput {
   name: String!
+  template: String!
 }
 
 type DataTable {
@@ -88,7 +89,7 @@ scalar DateTime
 
 type EmailTemplate {
   createdAt: DateTime
-  id: String!
+  id: ID
   name: String
   owner: User
   ownerId: String
@@ -141,7 +142,7 @@ type Mutation {
   register(input: RegisterUserInput!): User
   updateColumn(id: String!, input: UpdateColumnInput!): Column
   updateDataTable(id: String!, input: DataTableUpdateInput!): DataTable
-  updateEmailTemplate(id: String!, input: UpdateEmailTemplateInput!): EmailTemplate
+  updateEmailTemplate(id: ID!, input: UpdateEmailTemplateInput!): EmailTemplate
 }
 
 """
@@ -185,7 +186,7 @@ type Query {
     last: Int
   ): DataTableConnection
   drafts: [DataTable]!
-  emailTemplate(id: String!): EmailTemplate
+  emailTemplate(id: ID!): EmailTemplate
   emailTemplates: [EmailTemplate]!
   entry(id: String!): Entry
   getTableColumns(tableId: Int!): [Column]

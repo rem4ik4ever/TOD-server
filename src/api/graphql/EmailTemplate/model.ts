@@ -4,7 +4,7 @@ import { userResource } from '../../resources'
 export const EmailTemplate = objectType({
   name: 'EmailTemplate',
   definition (t) {
-    t.nonNull.string('id')
+    t.id('id')
     t.string('name')
     t.string('ownerId')
     t.nullable.string('template')

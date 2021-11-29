@@ -1,5 +1,5 @@
 // import { ConnectionArguments, connectionFromArray } from 'graphql-relay'
-import { extendType, nonNull, stringArg } from 'nexus'
+import { extendType, idArg, nonNull } from 'nexus'
 import { Context } from '../../context'
 import { getUserId } from '../utils'
 
@@ -19,7 +19,7 @@ export const EmailTemplateQueries = extendType({
     t.field('emailTemplate', {
       type: 'EmailTemplate',
       args: {
-        id: nonNull(stringArg())
+        id: nonNull(idArg())
       },
       resolve (_, args, ctx) {
         const { id } = args;

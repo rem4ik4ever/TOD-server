@@ -1,10 +1,11 @@
-import { arg, inputObjectType, mutationField, nonNull, stringArg } from 'nexus'
+import { arg, idArg, inputObjectType, mutationField, nonNull } from 'nexus'
 import { getUserId } from '../utils'
 
 export const CreateEmailTemplateInput = inputObjectType({
   name: 'CreateEmailTemplateInput',
   definition (t) {
     t.nonNull.string('name')
+    t.nonNull.string('template')
   }
 })
 
@@ -39,7 +40,7 @@ export const CreateEmailTemplate = mutationField(t => {
 export const UpdateEmailTemplate = mutationField('updateEmailTemplate', {
   type: 'EmailTemplate',
   args: {
-    id: nonNull(stringArg()),
+    id: nonNull(idArg()),
     input: nonNull(arg({ type: 'UpdateEmailTemplateInput' }))
   },
   async resolve (_, args, ctx) {
