@@ -38,6 +38,10 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  CreateEmailTemplateInput: { // input type
+    name: string; // String!
+    template: string; // String!
+  }
   DataTableInput: { // input type
     name: string; // String!
   }
@@ -62,6 +66,10 @@ export interface NexusGenInputs {
     hidden?: boolean | null; // Boolean
     minWidth?: number | null; // Int
     width?: string | null; // String
+  }
+  UpdateEmailTemplateInput: { // input type
+    name: string; // String!
+    template: string; // String!
   }
 }
 
@@ -109,6 +117,14 @@ export interface NexusGenObjects {
   DataTableEdge: { // root type
     cursor: string; // String!
     node?: NexusGenRootTypes['DataTable'] | null; // DataTable
+  }
+  EmailTemplate: { // root type
+    createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
+    id?: string | null; // ID
+    name?: string | null; // String
+    ownerId?: string | null; // String
+    template?: string | null; // String
+    updatedAt?: NexusGenScalars['DateTime'] | null; // DateTime
   }
   Entry: { // root type
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
@@ -190,6 +206,15 @@ export interface NexusGenFieldTypes {
     cursor: string; // String!
     node: NexusGenRootTypes['DataTable'] | null; // DataTable
   }
+  EmailTemplate: { // field return type
+    createdAt: NexusGenScalars['DateTime'] | null; // DateTime
+    id: string | null; // ID
+    name: string | null; // String
+    owner: NexusGenRootTypes['User'] | null; // User
+    ownerId: string | null; // String
+    template: string | null; // String
+    updatedAt: NexusGenScalars['DateTime'] | null; // DateTime
+  }
   Entry: { // field return type
     createdAt: NexusGenScalars['DateTime'] | null; // DateTime
     id: string | null; // ID
@@ -209,11 +234,13 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     confirmEmail: NexusGenRootTypes['User'] | null; // User
     createDataTable: NexusGenRootTypes['DataTable'] | null; // DataTable
+    createEmailTemplate: NexusGenRootTypes['EmailTemplate'] | null; // EmailTemplate
     login: NexusGenRootTypes['User'] | null; // User
     ping: string; // String!
     register: NexusGenRootTypes['User'] | null; // User
     updateColumn: NexusGenRootTypes['Column'] | null; // Column
     updateDataTable: NexusGenRootTypes['DataTable'] | null; // DataTable
+    updateEmailTemplate: NexusGenRootTypes['EmailTemplate'] | null; // EmailTemplate
   }
   PageInfo: { // field return type
     endCursor: string | null; // String
@@ -225,6 +252,8 @@ export interface NexusGenFieldTypes {
     dataTable: NexusGenRootTypes['DataTable'] | null; // DataTable
     dataTables: NexusGenRootTypes['DataTableConnection'] | null; // DataTableConnection
     drafts: Array<NexusGenRootTypes['DataTable'] | null>; // [DataTable]!
+    emailTemplate: NexusGenRootTypes['EmailTemplate'] | null; // EmailTemplate
+    emailTemplates: Array<NexusGenRootTypes['EmailTemplate'] | null>; // [EmailTemplate]!
     entry: NexusGenRootTypes['Entry'] | null; // Entry
     getTableColumns: Array<NexusGenRootTypes['Column'] | null> | null; // [Column]
     me: NexusGenRootTypes['User'] | null; // User
@@ -277,6 +306,15 @@ export interface NexusGenFieldTypeNames {
     cursor: 'String'
     node: 'DataTable'
   }
+  EmailTemplate: { // field return type name
+    createdAt: 'DateTime'
+    id: 'ID'
+    name: 'String'
+    owner: 'User'
+    ownerId: 'String'
+    template: 'String'
+    updatedAt: 'DateTime'
+  }
   Entry: { // field return type name
     createdAt: 'DateTime'
     id: 'ID'
@@ -296,11 +334,13 @@ export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     confirmEmail: 'User'
     createDataTable: 'DataTable'
+    createEmailTemplate: 'EmailTemplate'
     login: 'User'
     ping: 'String'
     register: 'User'
     updateColumn: 'Column'
     updateDataTable: 'DataTable'
+    updateEmailTemplate: 'EmailTemplate'
   }
   PageInfo: { // field return type name
     endCursor: 'String'
@@ -312,6 +352,8 @@ export interface NexusGenFieldTypeNames {
     dataTable: 'DataTable'
     dataTables: 'DataTableConnection'
     drafts: 'DataTable'
+    emailTemplate: 'EmailTemplate'
+    emailTemplates: 'EmailTemplate'
     entry: 'Entry'
     getTableColumns: 'Column'
     me: 'User'
@@ -343,6 +385,9 @@ export interface NexusGenArgTypes {
     createDataTable: { // args
       input: NexusGenInputs['DataTableInput']; // DataTableInput!
     }
+    createEmailTemplate: { // args
+      input: NexusGenInputs['CreateEmailTemplateInput']; // CreateEmailTemplateInput!
+    }
     login: { // args
       input: NexusGenInputs['LoginUserInput']; // LoginUserInput!
     }
@@ -360,6 +405,10 @@ export interface NexusGenArgTypes {
       id: string; // String!
       input: NexusGenInputs['DataTableUpdateInput']; // DataTableUpdateInput!
     }
+    updateEmailTemplate: { // args
+      id: string; // ID!
+      input: NexusGenInputs['UpdateEmailTemplateInput']; // UpdateEmailTemplateInput!
+    }
   }
   Query: {
     dataTable: { // args
@@ -370,6 +419,9 @@ export interface NexusGenArgTypes {
       before?: string | null; // String
       first?: number | null; // Int
       last?: number | null; // Int
+    }
+    emailTemplate: { // args
+      id: string; // ID!
     }
     entry: { // args
       id: string; // String!

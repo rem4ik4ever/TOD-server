@@ -15,6 +15,17 @@ const rules = {
       return false;
     }
     return userId === table.ownerId
+  }),
+  isTemplateOwner: rule()(async (args, ctx: Context) => {
+    const userId = getUserId(ctx);
+    const { templateId } = args;
+    if (userId === null) return false;
+
+    const templateExists = await ctx.prisma.emailTemplate.count({ where: { id: templateId } })
+    if (templateExists === 1) {
+      return true;
+    }
+    return false;
   })
 }
 
@@ -22,11 +33,15 @@ export const permissions = shield({
   Query: {
     dataTable: and(rules.isAuthenticated, rules.isTableOwner),
     dataTables: rules.isAuthenticated,
+    emailTemplates: rules.isAuthenticated,
+    emailTemplate: rules.isAuthenticated,
     getTableColumns: rules.isAuthenticated,
     me: rules.isAuthenticated
   },
   Mutation: {
     createDataTable: rules.isAuthenticated,
-    updateColumn: rules.isAuthenticated
+    updateColumn: rules.isAuthenticated,
+    createEmailTemplate: rules.isAuthenticated,
+    updateEmailTemplate: rules.isAuthenticated
   }
 })

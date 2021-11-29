@@ -11,7 +11,7 @@ generator client {
 }
 
 model DataTable {
-  id      String     @id @default(uuid())
+  id      String  @id @default(uuid())
   name    String
   status  String  @default("DRAFT")
   fileKey String?
@@ -19,7 +19,7 @@ model DataTable {
 
   columns   Column[]
   entries   Entry[]
-  owner     User?     @relation(fields: [ownerId], references: [id])
+  owner     User?    @relation(fields: [ownerId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -73,4 +73,13 @@ model FieldValue {
   entry    Entry  @relation(fields: [entryId], references: [id])
   columnId String
   column   Column @relation(fields: [columnId], references: [id])
+}
+
+model EmailTemplate {
+  id        String   @id @default(uuid())
+  name      String
+  template  String?
+  ownerId   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

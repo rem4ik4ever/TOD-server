@@ -14,6 +14,7 @@ import { ResqueSetup, resqueSetup } from './workers';
 import expressPlayground from 'graphql-playground-middleware-express'
 import cors from 'cors'
 import { ironSession, Session } from 'next-iron-session';
+import morgan from 'morgan'
 
 // initialize configuration
 dotenv.config();
@@ -32,6 +33,7 @@ export const initialize = async (): Promise<{app: Express, resque: ResqueSetup}>
   });
 
   app.use(opsBasePath, opsMiddleware);
+  app.use(morgan('combined'))
   app.use(cors({
     origin: process.env.APP_HOST_URL,
     credentials: true,
@@ -51,7 +53,11 @@ export const initialize = async (): Promise<{app: Express, resque: ResqueSetup}>
   app.use('/graphql', session, graphqlHTTP((request: Request & {session: Session}) => ({
     schema,
     context: createContext(request, mailTransporter, resque),
-    graphiql: false
+    graphiql: false,
+    customFormatErrorFn: (error) => ({
+      message: error.message,
+      details: process.env.NODE_ENV === 'production' ? null : error.stack
+    })
   })))
 
   app.get('/playground', expressPlayground({
