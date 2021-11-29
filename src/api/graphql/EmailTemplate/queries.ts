@@ -9,16 +9,11 @@ export const EmailTemplateQueries = extendType({
     t.nonNull.list.field('emailTemplates', {
       type: 'EmailTemplate',
       resolve: (_, __, ctx: Context) => {
-        try {
-          const ownerId = getUserId(ctx);
-          if (ownerId === null) {
-            return [];
-          }
-          return ctx.prisma.emailTemplate.findMany({ where: { ownerId } })
-        } catch (error) {
-          console.log('ERR', error)
+        const ownerId = getUserId(ctx);
+        if (ownerId === null) {
           return [];
         }
+        return ctx.prisma.emailTemplate.findMany({ where: { ownerId } })
       }
     })
     t.field('emailTemplate', {
@@ -26,9 +21,9 @@ export const EmailTemplateQueries = extendType({
       args: {
         id: nonNull(stringArg())
       },
-      async resolve (_, args, ctx) {
+      resolve (_, args, ctx) {
         const { id } = args;
-        return await ctx.prisma.emailTemplate.findUnique({ where: { id } })
+        return ctx.prisma.emailTemplate.findUnique({ where: { id } })
       }
     })
   }

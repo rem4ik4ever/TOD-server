@@ -4,7 +4,7 @@ import { tableResource } from '../../resources';
 import { getUserId } from '../utils';
 
 const rules = {
-  isAuthenticated: rule()((_parent, _args, ctx: Context) => {
+  isAuthenticated: rule()(async (_parent, _args, ctx: Context) => {
     const userId = getUserId(ctx);
     return Boolean(userId)
   }),
@@ -21,7 +21,7 @@ const rules = {
     const { templateId } = args;
     if (userId === null) return false;
 
-    const templateExists = await ctx.prisma.emailTemplate.count({ where: { id: templateId, ownerId: userId } })
+    const templateExists = await ctx.prisma.emailTemplate.count({ where: { id: templateId } })
     if (templateExists === 1) {
       return true;
     }
@@ -33,8 +33,8 @@ export const permissions = shield({
   Query: {
     dataTable: and(rules.isAuthenticated, rules.isTableOwner),
     dataTables: rules.isAuthenticated,
+    emailTemplates: rules.isAuthenticated,
     emailTemplate: rules.isAuthenticated,
-    emailTemplates: rules.isTemplateOwner,
     getTableColumns: rules.isAuthenticated,
     me: rules.isAuthenticated
   },
