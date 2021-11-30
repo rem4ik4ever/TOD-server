@@ -10,20 +10,6 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model DataTable {
-  id      String  @id @default(uuid())
-  name    String
-  status  String  @default("DRAFT")
-  fileKey String?
-  ownerId String?
-
-  columns   Column[]
-  entries   Entry[]
-  owner     User?    @relation(fields: [ownerId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
 model User {
   id                String             @id @default(uuid())
   username          String
@@ -33,7 +19,6 @@ model User {
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
   emailConfirmation EmailConfirmation?
-  tables            DataTable[]
 }
 
 model EmailConfirmation {
@@ -44,35 +29,6 @@ model EmailConfirmation {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-}
-
-model Column {
-  id       String       @id @default(uuid())
-  field    String
-  header   String
-  width    String
-  minWidth Int?
-  align    String
-  hidden   Boolean      @default(false)
-  tableId  String
-  table    DataTable    @relation(fields: [tableId], references: [id])
-  values   FieldValue[]
-}
-
-model Entry {
-  id      String       @id @default(uuid())
-  tableId String
-  table   DataTable    @relation(fields: [tableId], references: [id])
-  values  FieldValue[]
-}
-
-model FieldValue {
-  id       String @id @default(uuid())
-  value    String
-  entryId  String
-  entry    Entry  @relation(fields: [entryId], references: [id])
-  columnId String
-  column   Column @relation(fields: [columnId], references: [id])
 }
 
 model EmailTemplate {

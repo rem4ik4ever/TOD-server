@@ -5,21 +5,17 @@ import nodemailer from 'nodemailer'
 import SMTPTransport from 'nodemailer/lib/smtp-transport'
 import { ResqueSetup } from '../workers'
 import { prisma } from './db'
-import { ColumnResource, columnResource, EmailConfirmationResource, emailConfirmationResource, TableResource, tableResource, UserResource, userResource } from './resources'
+import { EmailConfirmationResource, emailConfirmationResource, UserResource, userResource } from './resources'
 
 export type MailTranporter = nodemailer.Transporter<SMTPTransport.SentMessageInfo>
 
 interface Resources {
   user: UserResource
   emailConfirmation: EmailConfirmationResource
-  dataTable: TableResource
-  column: ColumnResource
 }
 const resources = (client: PrismaClient): Resources => ({
   user: userResource({ client }),
-  emailConfirmation: emailConfirmationResource({ client }),
-  dataTable: tableResource({ client }),
-  column: columnResource({ client })
+  emailConfirmation: emailConfirmationResource({ client })
 })
 
 export interface ContextCore {

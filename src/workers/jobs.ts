@@ -1,10 +1,8 @@
 import { Plugins } from 'node-resque'
 import { prisma } from 'src/api/db';
 import { SendConfirmUserEmail, sendConfirmUserEmail } from 'src/api/domains/authentication/sendConfirmUserEmail';
-import { populateTable } from 'src/api/domains/populateTable';
-import { columnResource, emailConfirmationResource, tableResource } from 'src/api/resources';
+import { emailConfirmationResource } from 'src/api/resources';
 import { setupNodemailer } from 'src/config/nodemailerConfig';
-import { entryResource } from '../api/resources/entryResource';
 
 export const jobs = {
   add: {
@@ -56,22 +54,6 @@ export const jobs = {
       }
       const result = await sendConfirmUserEmail(params)
       if (!result) throw new Error('send_confirmation_email_failed')
-      return true;
-    }
-  },
-  populateTable: {
-    perform: async (tableId: number): Promise<Boolean> => {
-      try {
-        await populateTable({
-          tableResource: tableResource({ client: prisma }),
-          columnResource: columnResource({ client: prisma }),
-          entryResource: entryResource({ client: prisma }),
-          tableId
-        })
-      } catch (error) {
-        console.log(error);
-        return false;
-      }
       return true;
     }
   }
