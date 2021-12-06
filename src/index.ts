@@ -8,7 +8,9 @@ async function boot (): Promise<any> {
   const server = app.listen(port, () => {
     console.log(`GraphQL server running http://localhost:${port}/graphql`);
   });
-  await resque.queue.connect();
+  if (typeof resque !== 'undefined') {
+    await resque.queue.connect();
+  }
 
   const onHealthCheck = async (): Promise<void> => {
     console.log('health')
@@ -16,7 +18,10 @@ async function boot (): Promise<any> {
 
   const onSignal = async (): Promise<void> => {
     console.log('CLEANING UP SERVER')
-    await resque.queue.end()
+
+    if (typeof resque !== 'undefined') {
+      await resque.queue.end()
+    }
   }
 
   createTerminus(server, {

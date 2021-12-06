@@ -10,7 +10,7 @@ import { graphqlHTTP } from 'express-graphql';
 import { schema } from './api/schema';
 import { createContext } from './api/context';
 import { setupNodemailer } from './config/nodemailerConfig';
-import { ResqueSetup, resqueSetup } from './workers';
+import { ResqueSetup } from './workers';
 import expressPlayground from 'graphql-playground-middleware-express'
 import cors from 'cors'
 import { ironSession, Session } from 'next-iron-session';
@@ -19,10 +19,11 @@ import morgan from 'morgan'
 // initialize configuration
 dotenv.config();
 
-export const initialize = async (): Promise<{app: Express, resque: ResqueSetup}> => {
+export const initialize = async (): Promise<{app: Express, resque?: ResqueSetup}> => {
   const app = express();
   const mailTransporter = await setupNodemailer()
-  const resque = resqueSetup();
+  // const resque = resqueSetup();
+  const resque = undefined;
   const session = ironSession({
     cookieName: 'tod-session',
     password: String(process.env.IRON_SESSION_PASS),

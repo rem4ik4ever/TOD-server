@@ -23,8 +23,8 @@ export const authenticateUser = async ({ userResource, data, compare }: Authenti
   if (!valid) {
     throw new Error(AuthErrors.InvalidCredentials)
   }
-  if (!user.confirmed) {
-    throw new Error(AuthErrors.EmailNotConfirmed)
-  }
+  // if (!user.confirmed) {
+  //  throw new Error(AuthErrors.EmailNotConfirmed)
+  // }
   return user;
 }
