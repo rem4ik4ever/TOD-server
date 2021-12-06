@@ -101,3 +101,13 @@ export const Login = mutationField(t => {
     }
   })
 })
+
+export const Logout = mutationField(t => {
+  t.field('logout', {
+    type: 'Boolean',
+    resolve: async (_, _args, ctx) => {
+      ctx.req.session.destroy()
+      return true
+    }
+  })
+})

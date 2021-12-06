@@ -122,6 +122,7 @@ export interface NexusGenFieldTypes {
     confirmEmail: NexusGenRootTypes['User'] | null; // User
     createEmailTemplate: NexusGenRootTypes['EmailTemplate'] | null; // EmailTemplate
     login: NexusGenRootTypes['User'] | null; // User
+    logout: boolean | null; // Boolean
     ping: string; // String!
     register: NexusGenRootTypes['User'] | null; // User
     updateEmailTemplate: NexusGenRootTypes['EmailTemplate'] | null; // EmailTemplate
@@ -160,6 +161,7 @@ export interface NexusGenFieldTypeNames {
     confirmEmail: 'User'
     createEmailTemplate: 'EmailTemplate'
     login: 'User'
+    logout: 'Boolean'
     ping: 'String'
     register: 'User'
     updateEmailTemplate: 'EmailTemplate'

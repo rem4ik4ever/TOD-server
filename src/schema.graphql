@@ -36,6 +36,7 @@ type Mutation {
   confirmEmail(token: String!): User
   createEmailTemplate(input: CreateEmailTemplateInput!): EmailTemplate
   login(input: LoginUserInput!): User
+  logout: Boolean
   ping(text: String!): String!
   register(input: RegisterUserInput!): User
   updateEmailTemplate(id: ID!, input: UpdateEmailTemplateInput!): EmailTemplate

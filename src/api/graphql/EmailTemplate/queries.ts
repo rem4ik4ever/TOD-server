@@ -23,7 +23,11 @@ export const EmailTemplateQueries = extendType({
       },
       resolve (_, args, ctx) {
         const { id } = args;
-        return ctx.prisma.emailTemplate.findUnique({ where: { id } })
+        // const ownerId = getUserId(ctx)
+        // if (ownerId === null) {
+        //  return null;
+        // }
+        return ctx.prisma.emailTemplate.findFirst({ where: { id } })
       }
     })
   }

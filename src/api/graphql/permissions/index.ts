@@ -23,7 +23,7 @@ const rules = {
 export const permissions = shield({
   Query: {
     emailTemplates: rules.isAuthenticated,
-    emailTemplate: rules.isAuthenticated,
+    // emailTemplate: rules.isAuthenticated,
     me: rules.isAuthenticated
   },
   Mutation: {
