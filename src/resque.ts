@@ -9,7 +9,9 @@ async function boot (): Promise<any> {
   const server = app.listen(port, () => {
     console.log('**Node Resque server is running**');
   });
-  bootResque(resque).catch(err => console.log('Resque failed to boot', err.message))
+  if (typeof resque !== 'undefined') {
+    bootResque(resque).catch(err => console.log('Resque failed to boot', err.message))
+  }
 
   const onHealthCheck = async (): Promise<void> => {
     console.log('health')
@@ -17,7 +19,10 @@ async function boot (): Promise<any> {
 
   const onSignal = async (): Promise<void> => {
     console.log('NEED TO CLEANUP')
-    await shutdown(resque)
+
+    if (typeof resque !== 'undefined') {
+      await shutdown(resque)
+    }
   }
 
   createTerminus(server, {

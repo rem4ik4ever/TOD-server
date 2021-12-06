@@ -22,12 +22,12 @@ export interface ContextCore {
   prisma: PrismaClient
   req: Request & {session: Session}
   transporter: MailTranporter
-  resque: ResqueSetup | null | undefined
+  resque: ResqueSetup | undefined
 }
 
 export type Context = ContextCore & Resources
 
-export const createContext = (req: Request & {session: Session}, transporter: nodemailer.Transporter<SMTPTransport.SentMessageInfo>, resque: ResqueSetup | null | undefined): Context => {
+export const createContext = (req: Request & {session: Session}, transporter: nodemailer.Transporter<SMTPTransport.SentMessageInfo>, resque: ResqueSetup | undefined): Context => {
   return {
     req,
     prisma,

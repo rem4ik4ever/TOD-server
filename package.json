@@ -12,7 +12,7 @@
     "dev:start": "npm-run-all build start",
     "dev": "nodemon --watch src -e ts --exec ts-node -r tsconfig-paths/register --transpile-only ./src/index.ts",
     "resque": "nodemon --watch src -e ts --exec ts-node -r tsconfig-paths/register --transpile-only ./src/resque.ts",
-    "start": "node dist/index.js",
+    "start": "node dist/src/index.js",
     "generate": "ts-node --transpile-only src/api/schema",
     "test": "NODE_ENV=test yarn generate && jest --coverage ./src",
     "test:report": "NODE_ENV=test yarn generate && jest --coverage ./src && npx http-server ./coverage/lcov-report"
