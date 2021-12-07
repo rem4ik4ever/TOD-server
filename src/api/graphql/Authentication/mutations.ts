@@ -90,7 +90,7 @@ export const Login = mutationField(t => {
       try {
         const user = await authenticateUser({ userResource: userResource({ client: ctx.prisma }), data: args.input, compare })
 
-        ctx.req.session.set('user', { id: user.id })
+        ctx.req.session.user = { id: user.id }
         await ctx.req.session.save()
         return user
       } catch (error) {

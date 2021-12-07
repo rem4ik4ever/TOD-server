@@ -13,8 +13,9 @@ import { setupNodemailer } from './config/nodemailerConfig';
 import { ResqueSetup } from './workers';
 import expressPlayground from 'graphql-playground-middleware-express'
 import cors from 'cors'
-import { ironSession, Session } from 'next-iron-session';
+import { ironSession } from 'iron-session/express';
 import morgan from 'morgan'
+import { IronSession } from 'iron-session';
 
 // initialize configuration
 dotenv.config();
@@ -51,7 +52,7 @@ export const initialize = async (): Promise<{app: Express, resque?: ResqueSetup}
   });
 
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  app.use('/graphql', session, graphqlHTTP((request: Request & {session: Session}) => ({
+  app.use('/graphql', session, graphqlHTTP((request: Request & {session: IronSession & {user: {id: string}}}) => ({
     schema,
     context: createContext(request, mailTransporter, resque),
     graphiql: false,
