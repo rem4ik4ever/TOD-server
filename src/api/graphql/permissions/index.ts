@@ -1,6 +1,7 @@
 import { rule, shield } from 'graphql-shield';
 import { Context } from '../../context';
 import { getUserId } from '../utils';
+import * as Sentry from '@sentry/node';
 
 const rules = {
   isAuthenticated: rule()(async (_parent, _args, ctx: Context) => {
@@ -29,5 +30,11 @@ export const permissions = shield({
   Mutation: {
     createEmailTemplate: rules.isAuthenticated,
     updateEmailTemplate: rules.isAuthenticated
+  }
+},
+{
+  fallbackError: async (thrownThing) => {
+    Sentry.captureException(thrownThing)
+    return new Error('Internal server error')
   }
 })

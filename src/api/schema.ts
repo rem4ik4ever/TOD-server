@@ -1,8 +1,8 @@
 import { join } from 'path';
 import { makeSchema, connectionPlugin } from 'nexus';
 import * as types from './graphql';
-// import { applyMiddleware } from 'graphql-middleware';
-// import { permissions } from './graphql/permissions';
+import { applyMiddleware } from 'graphql-middleware';
+import { permissions } from './graphql/permissions';
 
 export const schemaWithoutPermissions = makeSchema({
   types,
@@ -31,5 +31,5 @@ export const schemaWithoutPermissions = makeSchema({
   }
 })
 
-// export const schema = applyMiddleware(schemaWithoutPermissions, permissions)
-export const schema = schemaWithoutPermissions
+export const schema = applyMiddleware(schemaWithoutPermissions, permissions)
+// export const schema = schemaWithoutPermissions
