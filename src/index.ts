@@ -1,7 +1,7 @@
 import { createTerminus } from '@godaddy/terminus';
 import { initialize } from './server';
 
-const port: string = (process.env.SERVER_PORT != null) ? process.env.SERVER_PORT : '8080';
+const port: string = (process.env.PORT != null) ? process.env.PORT : '8080';
 
 async function boot (): Promise<any> {
   const { app, resque } = await initialize();
