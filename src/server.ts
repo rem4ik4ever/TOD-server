@@ -16,12 +16,32 @@ import cors from 'cors'
 import { ironSession } from 'iron-session/express';
 import morgan from 'morgan'
 import { IronSession } from 'iron-session';
+import * as Sentry from '@sentry/node';
+import * as Tracing from '@sentry/tracing';
 
 // initialize configuration
 dotenv.config();
 
+const initSentry = (app: Express): void => {
+  Sentry.init({
+    dsn: 'https://30c325473b8541d78d66ec8010f44d6e@o483608.ingest.sentry.io/6095988',
+    integrations: [
+      // enable HTTP calls tracing
+      new Sentry.Integrations.Http({ tracing: true }),
+      // enable Express.js middleware tracing
+      new Tracing.Integrations.Express({ app })
+    ],
+
+    // Set tracesSampleRate to 1.0 to capture 100%
+    // of transactions for performance monitoring.
+    // We recommend adjusting this value in production
+    tracesSampleRate: 1.0
+  });
+}
+
 export const initialize = async (): Promise<{app: Express, resque?: ResqueSetup}> => {
   const app = express();
+  initSentry(app)
   const mailTransporter = await setupNodemailer()
   // const resque = resqueSetup();
   const resque = undefined;
@@ -36,6 +56,11 @@ export const initialize = async (): Promise<{app: Express, resque?: ResqueSetup}
 
   app.use(opsBasePath, opsMiddleware);
   app.use(morgan('combined'))
+  // RequestHandler creates a separate execution context using domains, so that every
+  // transaction/span/breadcrumb is attached to its own Hub instance
+  app.use(Sentry.Handlers.requestHandler());
+  // TracingHandler creates a trace for every incoming request
+  app.use(Sentry.Handlers.tracingHandler());
   app.use(cors({
     origin: process.env.APP_HOST_URL,
     credentials: true,
@@ -56,15 +81,19 @@ export const initialize = async (): Promise<{app: Express, resque?: ResqueSetup}
     schema,
     context: createContext(request, mailTransporter, resque),
     graphiql: false,
-    customFormatErrorFn: (error) => ({
-      message: error.message,
-      details: process.env.NODE_ENV === 'production' ? null : error.stack
-    })
+    customFormatErrorFn: (error) => {
+      console.error(error)
+      return {
+        message: error.message,
+        details: process.env.NODE_ENV === 'production' ? null : error.stack
+      }
+    }
   })))
 
   app.get('/playground', expressPlayground({
     endpoint: '/graphql'
   }))
 
+  app.use(Sentry.Handlers.errorHandler());
   return { app, resque };
 }
