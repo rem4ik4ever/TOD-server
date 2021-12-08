@@ -70,9 +70,11 @@ export const initialize = async (): Promise<{app: Express, resque?: ResqueSetup}
     }
   })))
 
-  app.get('/playground', expressPlayground({
-    endpoint: '/graphql'
-  }))
+  if (process.env.NODE_ENV !== 'production') {
+    app.get('/playground', expressPlayground({
+      endpoint: '/graphql'
+    }))
+  }
 
   app.use(Sentry.Handlers.errorHandler());
   return { app, resque };
