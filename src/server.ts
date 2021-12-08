@@ -33,7 +33,6 @@ export const initialize = async (): Promise<{app: Express, resque?: ResqueSetup}
     cookieOptions: {
     // the next line allows to use the session in non-https environements
       secure: process.env.NODE_ENV === 'production',
-      domain: process.env.APP_HOST_URL,
       sameSite: false
     }
   });
