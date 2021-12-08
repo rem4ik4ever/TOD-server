@@ -32,7 +32,8 @@ export const initialize = async (): Promise<{app: Express, resque?: ResqueSetup}
     password: String(process.env.IRON_SESSION_PASS),
     cookieOptions: {
     // the next line allows to use the session in non-https environements
-      secure: process.env.NODE_ENV === 'production'
+      secure: process.env.NODE_ENV === 'production',
+      domain: process.env.APP_HOST_URL
     }
   });
 
