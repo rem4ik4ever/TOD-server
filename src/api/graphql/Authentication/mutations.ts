@@ -43,6 +43,8 @@ export const Register = mutationField(t => {
         if (typeof ctx.resque !== 'undefined') {
           await ctx.resque.queue.enqueue('default', 'sendConfirmationEmail', [user.id])
         }
+        ctx.req.session.user = { id: user.id }
+        await ctx.req.session.save()
         return user;
       } catch (error) {
         if (Object.values(RegisterErrors).includes(error.message)) {

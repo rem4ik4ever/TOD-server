@@ -18,6 +18,7 @@ import morgan from 'morgan'
 import { IronSession } from 'iron-session';
 import * as Sentry from '@sentry/node';
 import { initSentry } from './lib/sentry';
+import { cookieOptions } from './utils';
 
 // initialize configuration
 dotenv.config();
@@ -30,11 +31,7 @@ export const initialize = async (): Promise<{app: Express, resque?: ResqueSetup}
   const session = ironSession({
     cookieName: 'tod-session',
     password: String(process.env.IRON_SESSION_PASS),
-    cookieOptions: {
-    // the next line allows to use the session in non-https environements
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'none'
-    }
+    cookieOptions: cookieOptions()
   });
 
   app.use(opsBasePath, opsMiddleware);
