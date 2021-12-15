@@ -13,7 +13,7 @@ export const EmailTemplateQueries = extendType({
         if (ownerId === null) {
           return [];
         }
-        return ctx.prisma.emailTemplate.findMany({ where: { ownerId } })
+        return ctx.prisma.emailTemplate.findMany({ where: { ownerId }, orderBy: { createdAt: 'desc' } })
       }
     })
     t.field('emailTemplate', {
