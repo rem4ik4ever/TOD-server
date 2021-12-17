@@ -1,6 +1,6 @@
 import { arg, inputObjectType, mutationField, nonNull } from 'nexus';
 import { getUserId } from '../utils';
-import stripeApi, { extractMetadataFromCheckoutSession, StripeMetadata } from 'src/lib/stripe'
+import stripeApi, { extractMetadataFromCheckoutSession, StripeMetadata } from '../../../lib/stripe'
 import Stripe from 'stripe';
 import { SubscriptionType } from '@prisma/client';
 
