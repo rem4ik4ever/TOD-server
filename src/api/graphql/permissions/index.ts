@@ -29,12 +29,15 @@ export const permissions = shield({
   },
   Mutation: {
     createEmailTemplate: rules.isAuthenticated,
-    updateEmailTemplate: rules.isAuthenticated
+    updateEmailTemplate: rules.isAuthenticated,
+    createSubscription: rules.isAuthenticated,
+    createSubscriptionCheckoutSession: rules.isAuthenticated
   }
 },
 {
   fallbackError: async (thrownThing) => {
     Sentry.captureException(thrownThing)
+    console.error(thrownThing)
     return new Error('Internal server error')
   }
 })

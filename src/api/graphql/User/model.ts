@@ -9,5 +9,6 @@ export const User = objectType({
     t.nonNull.boolean('confirmed')
     t.nonNull.field('createdAt', { type: 'DateTime' })
     t.nonNull.field('updatedAt', { type: 'DateTime' })
+    t.nullable.field('subscription', { type: 'Subscription' })
   }
 })

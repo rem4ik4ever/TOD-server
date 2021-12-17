@@ -19,6 +19,7 @@ model User {
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
   emailConfirmation EmailConfirmation?
+  subscription      Subscription?
 }
 
 model EmailConfirmation {
@@ -36,6 +37,22 @@ model EmailTemplate {
   name      String
   template  String?
   ownerId   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum SubscriptionType {
+  MONTHLY
+  ANNUAL
+}
+
+model Subscription {
+  id       String           @id @default(uuid())
+  type     SubscriptionType
+  price    Int
+  userId   String
+  user     User             @relation(fields: [userId], references: [id])
+  metadata Json?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

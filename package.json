@@ -15,7 +15,8 @@
     "start": "node dist/src/index.js",
     "generate": "ts-node --transpile-only src/api/schema",
     "test": "NODE_ENV=test yarn generate && jest --coverage ./src",
-    "test:report": "NODE_ENV=test yarn generate && jest --coverage ./src && npx http-server ./coverage/lcov-report"
+    "test:report": "NODE_ENV=test yarn generate && jest --coverage ./src && npx http-server ./coverage/lcov-report",
+    "console": "ts-node src/console.ts"
   },
   "keywords": [],
   "author": "",
@@ -49,6 +50,7 @@
     "node-resque": "^9.0.2",
     "nodemailer": "^6.6.2",
     "papaparse": "^5.3.1",
+    "stripe": "^8.194.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

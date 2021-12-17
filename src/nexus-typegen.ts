@@ -42,6 +42,9 @@ export interface NexusGenInputs {
     name: string; // String!
     template: string; // String!
   }
+  CreateSubscriptionInput: { // input type
+    checkoutSessionId: string; // String!
+  }
   LoginUserInput: { // input type
     email: string; // String!
     password: string; // String!
@@ -58,6 +61,7 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
+  SubscriptionType: "ANNUAL" | "MONTHLY"
 }
 
 export interface NexusGenScalars {
@@ -84,11 +88,20 @@ export interface NexusGenObjects {
   }
   Mutation: {};
   Query: {};
+  Subscription: { // root type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    id?: string | null; // String
+    price: number; // Int!
+    type: NexusGenEnums['SubscriptionType']; // SubscriptionType!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    userId: string; // String!
+  }
   User: { // root type
     confirmed: boolean; // Boolean!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     email: string; // String!
     id?: string | null; // String
+    subscription?: NexusGenRootTypes['Subscription'] | null; // Subscription
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
     username: string; // String!
   }
@@ -102,7 +115,7 @@ export interface NexusGenUnions {
 
 export type NexusGenRootTypes = NexusGenObjects
 
-export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
+export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnums
 
 export interface NexusGenFieldTypes {
   AuthType: { // field return type
@@ -121,6 +134,8 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     confirmEmail: NexusGenRootTypes['User'] | null; // User
     createEmailTemplate: NexusGenRootTypes['EmailTemplate'] | null; // EmailTemplate
+    createSubscription: NexusGenRootTypes['User'] | null; // User
+    createSubscriptionCheckoutSession: string | null; // String
     login: NexusGenRootTypes['User'] | null; // User
     logout: boolean | null; // Boolean
     ping: string; // String!
@@ -133,11 +148,20 @@ export interface NexusGenFieldTypes {
     me: NexusGenRootTypes['User'] | null; // User
     ok: boolean; // Boolean!
   }
+  Subscription: { // field return type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    id: string | null; // String
+    price: number; // Int!
+    type: NexusGenEnums['SubscriptionType']; // SubscriptionType!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    userId: string; // String!
+  }
   User: { // field return type
     confirmed: boolean; // Boolean!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     email: string; // String!
     id: string | null; // String
+    subscription: NexusGenRootTypes['Subscription'] | null; // Subscription
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
     username: string; // String!
   }
@@ -160,6 +184,8 @@ export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     confirmEmail: 'User'
     createEmailTemplate: 'EmailTemplate'
+    createSubscription: 'User'
+    createSubscriptionCheckoutSession: 'String'
     login: 'User'
     logout: 'Boolean'
     ping: 'String'
@@ -172,11 +198,20 @@ export interface NexusGenFieldTypeNames {
     me: 'User'
     ok: 'Boolean'
   }
+  Subscription: { // field return type name
+    createdAt: 'DateTime'
+    id: 'String'
+    price: 'Int'
+    type: 'SubscriptionType'
+    updatedAt: 'DateTime'
+    userId: 'String'
+  }
   User: { // field return type name
     confirmed: 'Boolean'
     createdAt: 'DateTime'
     email: 'String'
     id: 'String'
+    subscription: 'Subscription'
     updatedAt: 'DateTime'
     username: 'String'
   }
@@ -189,6 +224,9 @@ export interface NexusGenArgTypes {
     }
     createEmailTemplate: { // args
       input: NexusGenInputs['CreateEmailTemplateInput']; // CreateEmailTemplateInput!
+    }
+    createSubscription: { // args
+      input: NexusGenInputs['CreateSubscriptionInput']; // CreateSubscriptionInput!
     }
     login: { // args
       input: NexusGenInputs['LoginUserInput']; // LoginUserInput!
@@ -221,7 +259,7 @@ export type NexusGenObjectNames = keyof NexusGenObjects;
 
 export type NexusGenInputNames = keyof NexusGenInputs;
 
-export type NexusGenEnumNames = never;
+export type NexusGenEnumNames = keyof NexusGenEnums;
 
 export type NexusGenInterfaceNames = never;
 

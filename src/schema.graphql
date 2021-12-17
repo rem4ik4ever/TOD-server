@@ -12,6 +12,10 @@ input CreateEmailTemplateInput {
   template: String!
 }
 
+input CreateSubscriptionInput {
+  checkoutSessionId: String!
+}
+
 """
 A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
 """
@@ -35,6 +39,10 @@ input LoginUserInput {
 type Mutation {
   confirmEmail(token: String!): User
   createEmailTemplate(input: CreateEmailTemplateInput!): EmailTemplate
+  createSubscription(input: CreateSubscriptionInput!): User
+
+  """Create Stripe checkout session and return session ID"""
+  createSubscriptionCheckoutSession: String
   login(input: LoginUserInput!): User
   logout: Boolean
   ping(text: String!): String!
@@ -55,6 +63,20 @@ input RegisterUserInput {
   username: String!
 }
 
+type Subscription {
+  createdAt: DateTime!
+  id: String
+  price: Int!
+  type: SubscriptionType!
+  updatedAt: DateTime!
+  userId: String!
+}
+
+enum SubscriptionType {
+  ANNUAL
+  MONTHLY
+}
+
 input UpdateEmailTemplateInput {
   name: String!
   template: String!
@@ -65,6 +87,7 @@ type User {
   createdAt: DateTime!
   email: String!
   id: String
+  subscription: Subscription
   updatedAt: DateTime!
   username: String!
 }

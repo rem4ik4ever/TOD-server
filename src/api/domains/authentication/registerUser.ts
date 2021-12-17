@@ -11,7 +11,7 @@ export interface RegisterUser {
   }
 }
 
-const salt = (process.env.HASH_SALT != null) ? process.env.HASH_SALT : 10
+const salt = Number(process.env.HASH_SALT)
 
 export enum RegisterErrors {
   UserExists = 'user_exists'

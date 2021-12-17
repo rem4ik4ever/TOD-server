@@ -14,11 +14,10 @@ import { ResqueSetup } from './workers';
 import expressPlayground from 'graphql-playground-middleware-express'
 import cors from 'cors'
 import { ironSession } from 'iron-session/express';
-import morgan from 'morgan'
-import { IronSession } from 'iron-session';
 import * as Sentry from '@sentry/node';
 import { initSentry } from './lib/sentry';
 import { cookieOptions } from './utils';
+import { IronSession } from 'iron-session';
 
 // initialize configuration
 dotenv.config();
@@ -35,7 +34,7 @@ export const initialize = async (): Promise<{app: Express, resque?: ResqueSetup}
   });
 
   app.use(opsBasePath, opsMiddleware);
-  app.use(morgan('combined'))
+  // app.use(morgan('combined'))
   // RequestHandler creates a separate execution context using domains, so that every
   // transaction/span/breadcrumb is attached to its own Hub instance
   app.use(Sentry.Handlers.requestHandler());
@@ -63,7 +62,8 @@ export const initialize = async (): Promise<{app: Express, resque?: ResqueSetup}
     graphiql: false,
     customFormatErrorFn: (error) => {
       return {
-        message: error.message
+        message: error.message,
+        details: process.env.NODE_ENV !== 'production' ? error.stack : null
       }
     }
   })))

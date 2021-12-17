@@ -20,7 +20,7 @@ export function userResource ({ client }: {client: PrismaClient}): UserResource 
     return user;
   }
   const findById = async (id: string): UserResourceResponse => {
-    const user = await client.user.findUnique({ where: { id } })
+    const user = await client.user.findUnique({ where: { id }, include: { subscription: true } })
     return user;
   }
   const findByEmail = async (email: string): UserResourceResponse => {
