@@ -31,7 +31,9 @@ export const permissions = shield({
     createEmailTemplate: rules.isAuthenticated,
     updateEmailTemplate: rules.isAuthenticated,
     createSubscription: rules.isAuthenticated,
-    createSubscriptionCheckoutSession: rules.isAuthenticated
+    createSubscriptionCheckoutSession: rules.isAuthenticated,
+    updatePassword: rules.isAuthenticated,
+    updateProfile: rules.isAuthenticated
   }
 },
 {

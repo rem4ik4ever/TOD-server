@@ -49,6 +49,14 @@ export interface NexusGenInputs {
     email: string; // String!
     password: string; // String!
   }
+  PasswordUpdateInput: { // input type
+    newPassword: string; // String!
+    password: string; // String!
+  }
+  ProfileUpdateInput: { // input type
+    email?: string | null; // String
+    username?: string | null; // String
+  }
   RegisterUserInput: { // input type
     email: string; // String!
     password: string; // String!
@@ -141,6 +149,8 @@ export interface NexusGenFieldTypes {
     ping: string; // String!
     register: NexusGenRootTypes['User'] | null; // User
     updateEmailTemplate: NexusGenRootTypes['EmailTemplate'] | null; // EmailTemplate
+    updatePassword: NexusGenRootTypes['User']; // User!
+    updateProfile: NexusGenRootTypes['User'] | null; // User
   }
   Query: { // field return type
     emailTemplate: NexusGenRootTypes['EmailTemplate'] | null; // EmailTemplate
@@ -191,6 +201,8 @@ export interface NexusGenFieldTypeNames {
     ping: 'String'
     register: 'User'
     updateEmailTemplate: 'EmailTemplate'
+    updatePassword: 'User'
+    updateProfile: 'User'
   }
   Query: { // field return type name
     emailTemplate: 'EmailTemplate'
@@ -240,6 +252,12 @@ export interface NexusGenArgTypes {
     updateEmailTemplate: { // args
       id: string; // ID!
       input: NexusGenInputs['UpdateEmailTemplateInput']; // UpdateEmailTemplateInput!
+    }
+    updatePassword: { // args
+      input: NexusGenInputs['PasswordUpdateInput']; // PasswordUpdateInput!
+    }
+    updateProfile: { // args
+      input: NexusGenInputs['ProfileUpdateInput']; // ProfileUpdateInput!
     }
   }
   Query: {
