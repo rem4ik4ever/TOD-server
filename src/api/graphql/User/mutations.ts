@@ -47,7 +47,7 @@ const generatePayloadFromMetadata = (metadata: StripeMetadata): SubscriptionPayl
 }
 
 export const UpdateProfile = mutationField(t => {
-  t.nullable.field('updateProfile', {
+  t.nonNull.field('updateProfile', {
     type: 'User',
     args: {
       input: nonNull(arg({ type: 'ProfileUpdateInput' }))

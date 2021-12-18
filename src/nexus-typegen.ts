@@ -150,7 +150,7 @@ export interface NexusGenFieldTypes {
     register: NexusGenRootTypes['User'] | null; // User
     updateEmailTemplate: NexusGenRootTypes['EmailTemplate'] | null; // EmailTemplate
     updatePassword: NexusGenRootTypes['User']; // User!
-    updateProfile: NexusGenRootTypes['User'] | null; // User
+    updateProfile: NexusGenRootTypes['User']; // User!
   }
   Query: { // field return type
     emailTemplate: NexusGenRootTypes['EmailTemplate'] | null; // EmailTemplate
