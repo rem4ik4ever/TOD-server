@@ -58,6 +58,9 @@ export const UpdateProfile = mutationField(t => {
       if (user === null) throw new Error('user not found')
 
       if (typeof input.email === 'string' && input.email.length > 0) {
+        const existingEmail = await ctx.prisma.user.findUnique({ where: { email: input.email } })
+        if (existingEmail != null) throw new Error('email_is_taken')
+
         user.email = input.email
         user.confirmed = false
       }
@@ -67,6 +70,22 @@ export const UpdateProfile = mutationField(t => {
 
       const updatedUser = await ctx.prisma.user.update({ where: { id: userId }, data: { ...user } })
       return updatedUser;
+    }
+  })
+})
+
+export const DeactivateProfile = mutationField(t => {
+  t.nonNull.field('deactivateProfile', {
+    type: 'Boolean',
+    async resolve (_, __, ctx) {
+      const userId = getUserId(ctx);
+      const user = await ctx.prisma.user.findFirst({ where: { id: userId } })
+      if (user === null) throw new Error('user not found')
+      // @TODO do complete wipe of the account and related data
+      user.email = `deleted-${Date.now()}-${user.email}`
+      await ctx.prisma.user.update({ where: { id: userId }, data: { ...user } })
+      ctx.req.session.destroy()
+      return true;
     }
   })
 })

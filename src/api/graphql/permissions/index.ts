@@ -33,7 +33,8 @@ export const permissions = shield({
     createSubscription: rules.isAuthenticated,
     createSubscriptionCheckoutSession: rules.isAuthenticated,
     updatePassword: rules.isAuthenticated,
-    updateProfile: rules.isAuthenticated
+    updateProfile: rules.isAuthenticated,
+    deactivateProfile: rules.isAuthenticated
   }
 },
 {

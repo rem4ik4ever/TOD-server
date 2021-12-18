@@ -98,7 +98,7 @@ export interface NexusGenObjects {
   Query: {};
   Subscription: { // root type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
-    id?: string | null; // String
+    id: string; // ID!
     price: number; // Int!
     type: NexusGenEnums['SubscriptionType']; // SubscriptionType!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
@@ -108,8 +108,7 @@ export interface NexusGenObjects {
     confirmed: boolean; // Boolean!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     email: string; // String!
-    id?: string | null; // String
-    subscription?: NexusGenRootTypes['Subscription'] | null; // Subscription
+    id: string; // String!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
     username: string; // String!
   }
@@ -144,6 +143,7 @@ export interface NexusGenFieldTypes {
     createEmailTemplate: NexusGenRootTypes['EmailTemplate'] | null; // EmailTemplate
     createSubscription: NexusGenRootTypes['User'] | null; // User
     createSubscriptionCheckoutSession: string | null; // String
+    deactivateProfile: boolean; // Boolean!
     login: NexusGenRootTypes['User'] | null; // User
     logout: boolean | null; // Boolean
     ping: string; // String!
@@ -160,7 +160,7 @@ export interface NexusGenFieldTypes {
   }
   Subscription: { // field return type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
-    id: string | null; // String
+    id: string; // ID!
     price: number; // Int!
     type: NexusGenEnums['SubscriptionType']; // SubscriptionType!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
@@ -170,7 +170,7 @@ export interface NexusGenFieldTypes {
     confirmed: boolean; // Boolean!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     email: string; // String!
-    id: string | null; // String
+    id: string; // String!
     subscription: NexusGenRootTypes['Subscription'] | null; // Subscription
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
     username: string; // String!
@@ -196,6 +196,7 @@ export interface NexusGenFieldTypeNames {
     createEmailTemplate: 'EmailTemplate'
     createSubscription: 'User'
     createSubscriptionCheckoutSession: 'String'
+    deactivateProfile: 'Boolean'
     login: 'User'
     logout: 'Boolean'
     ping: 'String'
@@ -212,7 +213,7 @@ export interface NexusGenFieldTypeNames {
   }
   Subscription: { // field return type name
     createdAt: 'DateTime'
-    id: 'String'
+    id: 'ID'
     price: 'Int'
     type: 'SubscriptionType'
     updatedAt: 'DateTime'

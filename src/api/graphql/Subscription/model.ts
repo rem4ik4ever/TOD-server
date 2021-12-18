@@ -3,7 +3,7 @@ import { enumType, objectType } from 'nexus';
 export const Subscription = objectType({
   name: 'Subscription',
   definition (t) {
-    t.string('id')
+    t.nonNull.id('id')
     t.nonNull.int('price')
     t.nonNull.string('userId')
     t.nonNull.field('type', { type: 'SubscriptionType' })

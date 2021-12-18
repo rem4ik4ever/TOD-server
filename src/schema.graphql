@@ -43,6 +43,7 @@ type Mutation {
 
   """Create Stripe checkout session and return session ID"""
   createSubscriptionCheckoutSession: String
+  deactivateProfile: Boolean!
   login(input: LoginUserInput!): User
   logout: Boolean
   ping(text: String!): String!
@@ -77,7 +78,7 @@ input RegisterUserInput {
 
 type Subscription {
   createdAt: DateTime!
-  id: String
+  id: ID!
   price: Int!
   type: SubscriptionType!
   updatedAt: DateTime!
@@ -98,7 +99,7 @@ type User {
   confirmed: Boolean!
   createdAt: DateTime!
   email: String!
-  id: String
+  id: String!
   subscription: Subscription
   updatedAt: DateTime!
   username: String!
