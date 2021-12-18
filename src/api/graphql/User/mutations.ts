@@ -3,11 +3,28 @@ import { getUserId } from '../utils';
 import stripeApi, { extractMetadataFromCheckoutSession, StripeMetadata } from '../../../lib/stripe'
 import Stripe from 'stripe';
 import { SubscriptionType } from '@prisma/client';
+import { compare, hash } from 'bcryptjs';
 
 export const CreateSubscriptionInput = inputObjectType({
   name: 'CreateSubscriptionInput',
   definition (t) {
     t.nonNull.string('checkoutSessionId')
+  }
+})
+
+export const ProfileUpdateInput = inputObjectType({
+  name: 'ProfileUpdateInput',
+  definition (t) {
+    t.nullable.string('username')
+    t.nullable.string('email')
+  }
+})
+
+export const PasswordUpdateInput = inputObjectType({
+  name: 'PasswordUpdateInput',
+  definition (t) {
+    t.nonNull.string('password')
+    t.nonNull.string('newPassword')
   }
 })
 
@@ -28,6 +45,56 @@ const generatePayloadFromMetadata = (metadata: StripeMetadata): SubscriptionPayl
     price: metadata.price as number
   }
 }
+
+export const UpdateProfile = mutationField(t => {
+  t.nullable.field('updateProfile', {
+    type: 'User',
+    args: {
+      input: nonNull(arg({ type: 'ProfileUpdateInput' }))
+    },
+    async resolve (_, { input }, ctx) {
+      const userId = getUserId(ctx);
+      const user = await ctx.prisma.user.findFirst({ where: { id: userId } })
+      if (user === null) throw new Error('user not found')
+
+      if (typeof input.email === 'string' && input.email.length > 0) {
+        user.email = input.email
+        user.confirmed = false
+      }
+      if (typeof input.username === 'string' && input.username.length > 0) {
+        user.username = input.username
+      }
+
+      const updatedUser = await ctx.prisma.user.update({ where: { id: userId }, data: { ...user } })
+      return updatedUser;
+    }
+  })
+})
+
+export const UpdatePassword = mutationField(t => {
+  t.nonNull.field('updatePassword', {
+    type: 'User',
+    args: {
+      input: nonNull(arg({ type: 'PasswordUpdateInput' }))
+    },
+    async resolve (_, { input }, ctx) {
+      const userId = getUserId(ctx);
+      const user = await ctx.prisma.user.findFirst({ where: { id: userId } })
+      if (user === null) throw new Error('user not found')
+
+      const valid = await compare(input.password, user.password)
+      if (!valid) {
+        throw new Error('Invalid password')
+      }
+      const salt = Number(process.env.HASH_SALT)
+
+      const hashedPassword = await hash(input.newPassword, salt);
+
+      const updatedUser = await ctx.prisma.user.update({ where: { id: userId }, data: { password: hashedPassword } })
+      return updatedUser;
+    }
+  })
+})
 
 export const CreateSubscriptionCheckoutSession = mutationField(t => {
   t.nullable.field('createSubscriptionCheckoutSession', {

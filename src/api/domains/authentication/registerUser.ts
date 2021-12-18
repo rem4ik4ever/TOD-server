@@ -20,7 +20,6 @@ export enum RegisterErrors {
 export const registerUser = async ({ userResource, data }: RegisterUser): Promise<User> => {
   const userExists = await userResource.findByEmail(data.email)
   if (userExists != null) {
-    console.log('EXISTS')
     throw new Error(RegisterErrors.UserExists)
   }
   const hashedPassword = await hash(data.password, salt);

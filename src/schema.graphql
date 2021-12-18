@@ -48,6 +48,18 @@ type Mutation {
   ping(text: String!): String!
   register(input: RegisterUserInput!): User
   updateEmailTemplate(id: ID!, input: UpdateEmailTemplateInput!): EmailTemplate
+  updatePassword(input: PasswordUpdateInput!): User!
+  updateProfile(input: ProfileUpdateInput!): User
+}
+
+input PasswordUpdateInput {
+  newPassword: String!
+  password: String!
+}
+
+input ProfileUpdateInput {
+  email: String
+  username: String
 }
 
 type Query {

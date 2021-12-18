@@ -1,10 +1,9 @@
 import { Context } from '../context'
 
-export const getUserId = (context: Context): string|null => {
+export const getUserId = (context: Context): string => {
   try {
     return context.req.session.user.id
   } catch (err) {
-    console.log(err)
-    return null;
+    throw new Error('not_authorized')
   }
 }
