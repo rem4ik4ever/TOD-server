@@ -37,6 +37,7 @@ input LoginUserInput {
 }
 
 type Mutation {
+  cancelSubscription: Boolean!
   confirmEmail(token: String!): User
   createEmailTemplate(input: CreateEmailTemplateInput!): EmailTemplate
   createSubscription(input: CreateSubscriptionInput!): User
@@ -76,10 +77,11 @@ input RegisterUserInput {
   username: String!
 }
 
-type Subscription {
+type SubscriptionPlan {
   createdAt: DateTime!
   id: ID!
   price: Int!
+  subscriptionId: String!
   type: SubscriptionType!
   updatedAt: DateTime!
   userId: String!
@@ -100,7 +102,7 @@ type User {
   createdAt: DateTime!
   email: String!
   id: String!
-  subscription: Subscription
+  subscription: SubscriptionPlan
   updatedAt: DateTime!
   username: String!
 }

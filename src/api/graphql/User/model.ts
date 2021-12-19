@@ -10,7 +10,7 @@ export const User = objectType({
     t.nonNull.field('createdAt', { type: 'DateTime' })
     t.nonNull.field('updatedAt', { type: 'DateTime' })
     t.nullable.field('subscription', {
-      type: 'Subscription',
+      type: 'SubscriptionPlan',
       resolve (source, _, ctx) {
         return ctx.prisma.subscription.findFirst({ where: { userId: source.id } })
       }

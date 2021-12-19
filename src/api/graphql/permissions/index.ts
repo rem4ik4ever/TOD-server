@@ -34,7 +34,8 @@ export const permissions = shield({
     createSubscriptionCheckoutSession: rules.isAuthenticated,
     updatePassword: rules.isAuthenticated,
     updateProfile: rules.isAuthenticated,
-    deactivateProfile: rules.isAuthenticated
+    deactivateProfile: rules.isAuthenticated,
+    cancelSubscription: rules.isAuthenticated
   }
 },
 {
