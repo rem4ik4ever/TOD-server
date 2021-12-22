@@ -132,7 +132,8 @@ export const CreateSubscriptionCheckoutSession = mutationField(t => {
 
       // @TODO
       // Replace with env variable for subscription product ID
-      const product = await stripe.products.retrieve('prod_KlbJ2OSScqDUNu');
+      const productId = String(process.env.SUBSCRIPTION_PRODUCT_ID)
+      const product = await stripe.products.retrieve(productId);
       const prices = await stripe.prices.list({ product: product.id });
       const price = prices.data.pop();
       if (typeof price === 'undefined') return null;
