@@ -58,6 +58,9 @@ export const UpdateProfile = mutationField(t => {
       if (user === null) throw new Error('user not found')
 
       if (typeof input.email === 'string' && input.email.length > 0) {
+        const existingEmail = await ctx.prisma.user.findUnique({ where: { email: input.email } })
+        if (existingEmail != null) throw new Error('email_is_taken')
+
         user.email = input.email
         user.confirmed = false
       }
@@ -67,6 +70,22 @@ export const UpdateProfile = mutationField(t => {
 
       const updatedUser = await ctx.prisma.user.update({ where: { id: userId }, data: { ...user } })
       return updatedUser;
+    }
+  })
+})
+
+export const DeactivateProfile = mutationField(t => {
+  t.nonNull.field('deactivateProfile', {
+    type: 'Boolean',
+    async resolve (_, __, ctx) {
+      const userId = getUserId(ctx);
+      const user = await ctx.prisma.user.findFirst({ where: { id: userId } })
+      if (user === null) throw new Error('user not found')
+      // @TODO do complete wipe of the account and related data
+      user.email = `deleted-${Date.now()}-${user.email}`
+      await ctx.prisma.user.update({ where: { id: userId }, data: { ...user } })
+      ctx.req.session.destroy()
+      return true;
     }
   })
 })
@@ -149,16 +168,14 @@ export const CreateSubscription = mutationField(t => {
       if (typeof session.subscription === 'string') {
         const subscrition = await stripeApi.getSubscription(session.subscription)
         const { plan } = subscrition;
-        console.log({ subscrition, plan })
-        if (plan != null) {
+        if (typeof plan !== 'undefined') {
           payload = generatePayloadFromPlan(plan)
         }
       }
 
-      // Fetch subscription from stripe
-      // Save subscription into in DB
       await ctx.prisma.subscription.create({
         data: {
+          subscriptionId: String(metadata.subscription),
           price: payload.price,
           type: payload.type,
           userId: String(userId),
@@ -167,6 +184,26 @@ export const CreateSubscription = mutationField(t => {
       })
       const user = await ctx.prisma.user.findFirst({ where: { id: String(userId) }, include: { subscription: true } })
       return user;
+    }
+  })
+})
+
+export const CancelSubscription = mutationField(t => {
+  t.nonNull.field('cancelSubscription', {
+    type: 'Boolean',
+    async resolve (_, __, ctx) {
+      try {
+        const userId = getUserId(ctx)
+
+        const subscription = await ctx.prisma.subscription.findFirst({ where: { userId: userId } })
+        if (subscription === null) throw new Error('user_not_subscribed')
+
+        await stripeApi.cancelSubscription(subscription.subscriptionId)
+        await ctx.prisma.subscription.delete({ where: { id: subscription.id } })
+        return true;
+      } catch (error) {
+        return false;
+      }
     }
   })
 })

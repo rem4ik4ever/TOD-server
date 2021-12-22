@@ -1,5 +1,4 @@
 import { queryField } from 'nexus';
-import { userResource } from '../../resources';
 import { getUserId } from '../utils';
 
 export const Me = queryField('me', {
@@ -9,7 +8,7 @@ export const Me = queryField('me', {
     if (typeof id !== 'string') {
       throw new Error('not_authorized')
     }
-    const user = await userResource({ client: ctx.prisma }).findById(id)
+    const user = await ctx.prisma.user.findFirst({ where: { id } })
     if (user == null) {
       throw new Error('authorized_user_not_found')
     }

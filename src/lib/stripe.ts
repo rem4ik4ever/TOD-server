@@ -17,6 +17,11 @@ const getSubscription = async (subscriptionId: string): Promise<Stripe.Subscript
   return subscription;
 }
 
+const cancelSubscription = async (subscriptionId: string): Promise<Stripe.Subscription> => {
+  const result = await stripe.subscriptions.del(subscriptionId);
+  return result;
+}
+
 export interface StripeMetadata {
   customer: string | Stripe.Customer | Stripe.DeletedCustomer | null
   subscription: string | Stripe.Subscription | null
@@ -35,5 +40,6 @@ export const extractMetadataFromCheckoutSession = (checkoutSession: Stripe.Check
 export default {
   stripe,
   getCheckoutSession,
-  getSubscription
+  getSubscription,
+  cancelSubscription
 }

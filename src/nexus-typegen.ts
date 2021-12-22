@@ -96,10 +96,11 @@ export interface NexusGenObjects {
   }
   Mutation: {};
   Query: {};
-  Subscription: { // root type
+  SubscriptionPlan: { // root type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
-    id?: string | null; // String
+    id: string; // ID!
     price: number; // Int!
+    subscriptionId: string; // String!
     type: NexusGenEnums['SubscriptionType']; // SubscriptionType!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
     userId: string; // String!
@@ -108,8 +109,7 @@ export interface NexusGenObjects {
     confirmed: boolean; // Boolean!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     email: string; // String!
-    id?: string | null; // String
-    subscription?: NexusGenRootTypes['Subscription'] | null; // Subscription
+    id: string; // String!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
     username: string; // String!
   }
@@ -140,10 +140,12 @@ export interface NexusGenFieldTypes {
     updatedAt: NexusGenScalars['DateTime'] | null; // DateTime
   }
   Mutation: { // field return type
+    cancelSubscription: boolean; // Boolean!
     confirmEmail: NexusGenRootTypes['User'] | null; // User
     createEmailTemplate: NexusGenRootTypes['EmailTemplate'] | null; // EmailTemplate
     createSubscription: NexusGenRootTypes['User'] | null; // User
     createSubscriptionCheckoutSession: string | null; // String
+    deactivateProfile: boolean; // Boolean!
     login: NexusGenRootTypes['User'] | null; // User
     logout: boolean | null; // Boolean
     ping: string; // String!
@@ -158,10 +160,11 @@ export interface NexusGenFieldTypes {
     me: NexusGenRootTypes['User'] | null; // User
     ok: boolean; // Boolean!
   }
-  Subscription: { // field return type
+  SubscriptionPlan: { // field return type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
-    id: string | null; // String
+    id: string; // ID!
     price: number; // Int!
+    subscriptionId: string; // String!
     type: NexusGenEnums['SubscriptionType']; // SubscriptionType!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
     userId: string; // String!
@@ -170,8 +173,8 @@ export interface NexusGenFieldTypes {
     confirmed: boolean; // Boolean!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     email: string; // String!
-    id: string | null; // String
-    subscription: NexusGenRootTypes['Subscription'] | null; // Subscription
+    id: string; // String!
+    subscription: NexusGenRootTypes['SubscriptionPlan'] | null; // SubscriptionPlan
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
     username: string; // String!
   }
@@ -192,10 +195,12 @@ export interface NexusGenFieldTypeNames {
     updatedAt: 'DateTime'
   }
   Mutation: { // field return type name
+    cancelSubscription: 'Boolean'
     confirmEmail: 'User'
     createEmailTemplate: 'EmailTemplate'
     createSubscription: 'User'
     createSubscriptionCheckoutSession: 'String'
+    deactivateProfile: 'Boolean'
     login: 'User'
     logout: 'Boolean'
     ping: 'String'
@@ -210,10 +215,11 @@ export interface NexusGenFieldTypeNames {
     me: 'User'
     ok: 'Boolean'
   }
-  Subscription: { // field return type name
+  SubscriptionPlan: { // field return type name
     createdAt: 'DateTime'
-    id: 'String'
+    id: 'ID'
     price: 'Int'
+    subscriptionId: 'String'
     type: 'SubscriptionType'
     updatedAt: 'DateTime'
     userId: 'String'
@@ -223,7 +229,7 @@ export interface NexusGenFieldTypeNames {
     createdAt: 'DateTime'
     email: 'String'
     id: 'String'
-    subscription: 'Subscription'
+    subscription: 'SubscriptionPlan'
     updatedAt: 'DateTime'
     username: 'String'
   }

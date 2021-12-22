@@ -37,12 +37,14 @@ input LoginUserInput {
 }
 
 type Mutation {
+  cancelSubscription: Boolean!
   confirmEmail(token: String!): User
   createEmailTemplate(input: CreateEmailTemplateInput!): EmailTemplate
   createSubscription(input: CreateSubscriptionInput!): User
 
   """Create Stripe checkout session and return session ID"""
   createSubscriptionCheckoutSession: String
+  deactivateProfile: Boolean!
   login(input: LoginUserInput!): User
   logout: Boolean
   ping(text: String!): String!
@@ -75,10 +77,11 @@ input RegisterUserInput {
   username: String!
 }
 
-type Subscription {
+type SubscriptionPlan {
   createdAt: DateTime!
-  id: String
+  id: ID!
   price: Int!
+  subscriptionId: String!
   type: SubscriptionType!
   updatedAt: DateTime!
   userId: String!
@@ -98,8 +101,8 @@ type User {
   confirmed: Boolean!
   createdAt: DateTime!
   email: String!
-  id: String
-  subscription: Subscription
+  id: String!
+  subscription: SubscriptionPlan
   updatedAt: DateTime!
   username: String!
 }

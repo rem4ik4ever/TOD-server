@@ -18,6 +18,7 @@ model User {
   confirmed         Boolean            @default(false)
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
+  trialEnd          DateTime           @default(now())
   emailConfirmation EmailConfirmation?
   subscription      Subscription?
 }
@@ -47,12 +48,13 @@ enum SubscriptionType {
 }
 
 model Subscription {
-  id       String           @id @default(uuid())
-  type     SubscriptionType
-  price    Int
-  userId   String
-  user     User             @relation(fields: [userId], references: [id])
-  metadata Json?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id             String           @id @default(uuid())
+  subscriptionId String           @default("invalid")
+  type           SubscriptionType
+  price          Int
+  userId         String
+  user           User             @relation(fields: [userId], references: [id])
+  metadata       Json?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
 }
