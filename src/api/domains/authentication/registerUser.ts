@@ -1,6 +1,7 @@
 import { UserResource } from '../../resources'
 import { hash } from 'bcryptjs';
 import { User } from '.prisma/client';
+import { add } from 'date-fns'
 
 export interface RegisterUser {
   userResource: UserResource
@@ -25,7 +26,8 @@ export const registerUser = async ({ userResource, data }: RegisterUser): Promis
   const hashedPassword = await hash(data.password, salt);
   const payload = {
     ...data,
-    password: hashedPassword
+    password: hashedPassword,
+    trialEnd: add(Date.now(), { days: 14 })
   }
   const user = await userResource.createUser(payload);
   if (user == null) {

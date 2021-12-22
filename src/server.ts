@@ -61,6 +61,10 @@ export const initialize = async (): Promise<{app: Express, resque?: ResqueSetup}
     context: createContext(request, mailTransporter, resque),
     graphiql: false,
     customFormatErrorFn: (error) => {
+      console.error({
+        error,
+        details: error.stack
+      })
       return {
         message: error.message,
         details: process.env.NODE_ENV !== 'production' ? error.stack : null

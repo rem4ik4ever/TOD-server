@@ -18,6 +18,23 @@ const rules = {
       return true;
     }
     return false;
+  }),
+  subscribedOrFreeTrial: rule()(async (_, __, ctx: Context) => {
+    const userId = getUserId(ctx)
+    const user = await ctx.prisma.user.findUnique({ where: { id: userId }, include: { subscription: true } })
+    if (user === null) return false;
+    console.log('checking subscription')
+    if (user.subscription !== null) {
+      return true
+    }
+
+    console.log('no subscription')
+    const trialEnd = new Date(user.trialEnd).getTime()
+    if (trialEnd > Date.now()) {
+      return true;
+    }
+    console.log('trial expired subscription')
+    return 'trial_has_expired'
   })
 }
 
@@ -28,8 +45,8 @@ export const permissions = shield({
     me: rules.isAuthenticated
   },
   Mutation: {
-    createEmailTemplate: rules.isAuthenticated,
-    updateEmailTemplate: rules.isAuthenticated,
+    createEmailTemplate: rules.subscribedOrFreeTrial,
+    updateEmailTemplate: rules.subscribedOrFreeTrial,
     createSubscription: rules.isAuthenticated,
     createSubscriptionCheckoutSession: rules.isAuthenticated,
     updatePassword: rules.isAuthenticated,
@@ -41,7 +58,7 @@ export const permissions = shield({
 {
   fallbackError: async (thrownThing) => {
     Sentry.captureException(thrownThing)
-    console.error(thrownThing)
+    console.error('FallbackError:', thrownThing)
     return new Error('Internal server error')
   }
 })
